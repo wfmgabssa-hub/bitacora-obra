@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#F3EDE0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Bitácora de obra móvil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --paper:#F3EDE0;
+    --paper-card:#FBF8F0;
+    --ink:#2B2620;
+    --ink-soft:#6B6357;
+    --ink-faint:#A39B8B;
+    --rule:#D8CFBB;
+    --rule-strong:#C2B69E;
+    --clay:#B5502E;
+    --clay-dark:#7C361E;
+    --clay-tint:#F0DCCF;
+    --moss:#5C6B3F;
+    --moss-tint:#E4E9D6;
+    --danger:#A8402F;
+    --shadow:0 1px 2px rgba(43,38,32,0.06);
+    --shadow-lift:0 6px 20px rgba(43,38,32,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(43,38,32,0.05) 1px, transparent 0);
+    background-size:22px 22px;
+    color:var(--ink);
+    font-family:'Inter',-apple-system,sans-serif;
+    min-height:100vh;
+    padding-bottom:calc(80px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- header ---------- */
+  header{
+    padding:36px 0 22px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand-mark{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+  }
+  .brand-mark .num{
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    color:var(--clay);
+    background:var(--clay-tint);
+    padding:3px 8px;
+    border-radius:3px;
+    letter-spacing:0.03em;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:32px;
+    margin:6px 0 4px;
+    letter-spacing:-0.01em;
+  }
+  header p{margin:0;color:var(--ink-soft);font-size:14px;}
+  .header-actions{display:flex;gap:10px;}
+
+  button{
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+    border-radius:3px;
+    transition:transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+    min-height:44px;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  button:active{transform:scale(0.97);}
+
+  .btn-ghost{
+    background:transparent;
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    font-size:13px;
+    font-weight:600;
+    padding:9px 14px;
+  }
+  .btn-ghost:hover{background:var(--ink);color:var(--paper-card);}
+
+  .btn-clay{
+    background:var(--clay);
+    border:1.5px solid var(--clay);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    padding:9px 16px;
+  }
+  .btn-clay:hover{background:var(--clay-dark);border-color:var(--clay-dark);}
+
+  /* ---------- form card ---------- */
+  .card{
+    background:var(--paper-card);
+    border:1px solid var(--rule);
+    border-radius:6px;
+    box-shadow:var(--shadow);
+    padding:26px 26px 22px;
+    margin-bottom:26px;
+  }
+  .card-title{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--ink-faint);
+    margin:0 0 18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card-title::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--rule);
+  }
+  .device-note{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    margin:-10px 0 18px;
+    padding:11px 13px;
+    border:1px solid #C9D2B8;
+    border-radius:8px;
+    background:var(--moss-tint);
+    color:#3E4A28;
+    font-size:12px;
+    line-height:1.45;
+  }
+  .device-note strong{display:block;margin-bottom:2px;}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+  input[type=date], input[type=text], textarea, input[type=number]{
+    width:100%;
+    background:#fff;
+    border:1.5px solid var(--rule-strong);
+    border-radius:4px;
+    padding:10px 12px;
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    color:var(--ink);
+    min-height:50px;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--clay);
+    box-shadow:0 0 0 3px var(--clay-tint);
+  }
+  textarea{resize:vertical;min-height:108px;line-height:1.5;}
+
+  /* ---------- materials ---------- */
+  .mat-head{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 130px 34px;
+    gap:10px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-faint);
+    padding:0 2px 6px;
+  }
+  .mat-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 130px 34px;
+    gap:10px;
+    margin-bottom:9px;
+    align-items:center;
+  }
+  .mat-mobile-top{display:contents;}
+  .mat-mobile-title,.mat-label{display:none;}
+  .mat-field{min-width:0;}
+  .mat-row input, .mat-row .cost-input{min-width:0;}
+  .mat-row .cost-input{position:relative;}
+  .mat-row .cost-input span{
+    position:absolute;left:11px;top:50%;transform:translateY(-50%);
+    color:var(--ink-faint);font-size:14px;pointer-events:none;
+  }
+  .mat-row .cost-input input{padding-left:24px;text-align:right;font-family:'Space Mono',monospace;}
+  .mat-del{
+    background:transparent;border:1.5px solid var(--rule-strong);
+    color:var(--ink-faint);width:42px;height:50px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;line-height:1;border-radius:4px;
+  }
+  .mat-del:hover{border-color:var(--danger);color:var(--danger);background:#FBEDEB;}
+
+  .add-mat{
+    background:transparent;
+    border:1.5px dashed var(--rule-strong);
+    color:var(--ink-soft);
+    font-size:13px;
+    font-weight:600;
+    padding:13px 14px;
+    min-height:52px;
+    width:100%;
+    margin-top:4px;
+    border-radius:4px;
+  }
+  .add-mat:hover{border-color:var(--clay);color:var(--clay);border-style:solid;}
+
+  .total-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+    padding-top:16px;
+    border-top:1.5px solid var(--ink);
+  }
+  .total-bar .label{font-size:13px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.06em;}
+  .total-bar .amount{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:28px;
+    color:var(--clay-dark);
+  }
+
+  .form-actions{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+  }
+  .form-actions .btn-clay{flex:1;padding:12px;font-size:14px;}
+  .form-actions .btn-ghost{padding:12px 16px;}
+
+  /* ---------- history ---------- */
+  .history-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .history-title h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0;
+  }
+  .history-count{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+
+  .entry{
+    background:var(--paper-card);
+    border:1px solid var(--rule);
+    border-left:3px solid var(--clay);
+    border-radius:5px;
+    padding:16px 18px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .entry-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:8px;
+  }
+  .entry-date{
+    font-family:'Space Mono',monospace;
+    font-size:12.5px;
+    color:var(--clay);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .entry-total{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:18px;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .entry-desc{
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin:0 0 10px;
+  }
+  .entry-mats{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:12px;
+  }
+  .entry-mats span{
+    font-family:'Space Mono',monospace;
+    font-size:11.5px;
+    background:var(--moss-tint);
+    color:#3E4A28;
+    padding:3px 8px;
+    border-radius:3px;
+  }
+  .entry-actions{display:flex;gap:8px;}
+  .entry-actions button{
+    font-size:12px;
+    padding:9px 11px;
+    min-height:44px;
+    border:1.5px solid var(--rule-strong);
+    background:transparent;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .entry-actions button:hover{border-color:var(--ink);color:var(--ink);}
+  .entry-actions .del:hover{border-color:var(--danger);color:var(--danger);background:#FBEDEB;}
+
+  .empty{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--ink-faint);
+    border:1.5px dashed var(--rule-strong);
+    border-radius:6px;
+    font-size:14px;
+  }
+  .empty .icon{font-size:26px;margin-bottom:8px;display:block;}
+
+  .toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:var(--paper-card);
+    padding:11px 20px;
+    border-radius:5px;
+    font-size:13.5px;
+    font-weight:500;
+    opacity:0;
+    pointer-events:none;
+    transition:all 0.25s ease;
+    box-shadow:var(--shadow-lift);
+    z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (max-width:560px){
+    .wrap{padding:0 12px;}
+    header{
+      padding:calc(22px + env(safe-area-inset-top)) 2px 18px;
+      margin-bottom:18px;
+      align-items:flex-start;
+    }
+    h1{font-size:30px;line-height:1.05;}
+    header p{font-size:13px;}
+    .header-actions{width:100%;}
+    .header-actions .btn-ghost{width:100%;min-height:48px;}
+    .row2{grid-template-columns:1fr;}
+    .card{padding:18px 15px;border-radius:12px;}
+    .field{margin-bottom:20px;}
+    .mat-head{display:none;}
+    .mat-row{
+      display:block;
+      position:relative;
+      margin-bottom:13px;
+      padding:14px;
+      border:1px solid var(--rule);
+      border-radius:11px;
+      background:#F8F3E9;
+    }
+    .mat-mobile-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .mat-mobile-title{
+      font-family:'Space Mono',monospace;
+      color:var(--clay-dark);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .mat-label{
+      display:block;
+      margin:0 0 6px;
+      color:var(--ink-soft);
+      font-size:12px;
+      font-weight:600;
+    }
+    .mat-field{margin-bottom:12px;}
+    .mat-field:last-child{margin-bottom:0;}
+    .mat-del{
+      width:auto;
+      min-width:76px;
+      height:44px;
+      border-color:#D9AAA1;
+      background:#FBEDEB;
+      color:var(--danger);
+      font-size:12px;
+      font-weight:700;
+    }
+    .mat-row .cost-input input{text-align:left;}
+    .total-bar{margin-top:24px;}
+    .form-actions{
+      position:sticky;
+      bottom:calc(8px + env(safe-area-inset-bottom));
+      z-index:15;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      margin:22px -7px -7px;
+      padding:8px;
+      border:1px solid var(--rule);
+      border-radius:12px;
+      background:rgba(251,248,240,.95);
+      box-shadow:var(--shadow-lift);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+    .form-actions .btn-clay,.form-actions .btn-ghost{
+      width:100%;
+      min-height:52px;
+      padding:12px;
+      font-size:14px;
+    }
+    .entry{padding:15px 14px;}
+    .entry-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+    .entry-actions .pdf{grid-column:1 / -1;}
+    .entry-actions button{width:100%;}
+    .toast{
+      right:14px;
+      bottom:calc(16px + env(safe-area-inset-bottom));
+      left:14px;
+      width:auto;
+      text-align:center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand-mark"><span class="num" id="entry-count-badge">#001</span></div>
+      <h1>Bitácora de obra</h1>
+      <p>Registro móvil de trabajo, materiales y costos</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-ghost" id="btn-export-all">Exportar todo a PDF</button>
+    </div>
+  </header>
+
+  <div class="device-note">
+    <span aria-hidden="true">&#9679;</span>
+    <span><strong>Lista para usarse en teléfono</strong>El historial se guarda en este dispositivo. Usa siempre el mismo navegador.</span>
+  </div>
+
+  <div class="card">
+    <p class="card-title">Nueva entrada</p>
+
+    <div class="row2">
+      <div class="field">
+        <label for="f-date">Fecha</label>
+        <input type="date" id="f-date">
+      </div>
+      <div class="field">
+        <label for="f-label">Referencia (opcional)</label>
+        <input type="text" id="f-label" placeholder="Ej. Casa 2, área 5">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="f-desc">Descripción del trabajo</label>
+      <textarea id="f-desc" placeholder="Ej. Se realizó el mantenimiento del área 5, haciendo los cambios de los materiales M1 y M2."></textarea>
+    </div>
+
+    <div class="field" style="margin-bottom:8px;">
+      <label>Materiales</label>
+      <div class="mat-head">
+        <span>Material / justificación</span>
+        <span>Costo</span>
+        <span></span>
+      </div>
+      <div id="mat-list">
+        <div class="mat-row">
+          <div class="mat-mobile-top">
+            <span class="mat-mobile-title">Material 1</span>
+            <button type="button" class="mat-del" title="Quitar">Quitar</button>
+          </div>
+          <div class="mat-field">
+            <label class="mat-label">Material / justificación</label>
+            <input type="text" placeholder="Ej. Cemento gris, 2 bultos">
+          </div>
+          <div class="mat-field">
+            <label class="mat-label">Costo</label>
+            <div class="cost-input"><span>$</span><input type="text" inputmode="decimal" placeholder="0.00"></div>
+          </div>
+        </div>
+      </div>
+      <button class="add-mat" id="btn-add-mat" type="button">+ Agregar material</button>
+    </div>
+
+    <div class="total-bar">
+      <span class="label">Total</span>
+      <span class="amount" id="live-total">$0</span>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-clay" id="btn-save-pdf" type="button">Guardar y crear PDF</button>
+      <button class="btn-ghost" id="btn-save" type="button">Solo guardar</button>
+      <button class="btn-ghost" id="btn-clear" type="button">Limpiar</button>
+    </div>
+  </div>
+
+  <div class="history-title">
+    <h2>Historial</h2>
+    <span class="history-count" id="history-count">0 entradas</span>
+  </div>
+  <div id="history-list"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+
+  var STORAGE_KEY = 'bitacora_obra_entries_v1';
+  var entries = [];
+  var currentMats = [];
+  var editingId = null;
+
+  // ---------- storage ----------
+  function loadEntries(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      entries = raw ? JSON.parse(raw) : [];
+    }catch(e){ entries = []; }
+  }
+  function saveEntries(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  // ---------- helpers ----------
+  function fmtMoney(n){
+    n = isNaN(n) ? 0 : n;
+    return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+  function fmtMoneyShort(n){
+    n = isNaN(n) ? 0 : n;
+    return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:0, maximumFractionDigits:2});
+  }
+  function fmtDateLong(iso){
+    if(!iso) return '';
+    var parts = iso.split('-');
+    var d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+    var dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return dias[d.getDay()] + ' ' + d.getDate() + ' de ' + meses[d.getMonth()] + ', ' + d.getFullYear();
+  }
+  function fmtDateShort(iso){
+    if(!iso) return '';
+    var parts = iso.split('-');
+    var d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+    var dias = ['dom','lun','mar','mié','jue','vie','sáb'];
+    var meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return dias[d.getDay()] + ' ' + d.getDate() + ' ' + meses[d.getMonth()];
+  }
+  function uid(){
+    return 'e' + Date.now() + Math.random().toString(36).slice(2,7);
+  }
+  function todayISO(){
+    var d = new Date();
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var day = String(d.getDate()).padStart(2,'0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+  function showToast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._tm);
+    showToast._tm = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  }
+
+  // ---------- materials rows (form) ----------
+  function addMatRow(name, cost, focusNew){
+    var row = { id: uid(), name: name || '', cost: (cost !== undefined ? cost : '') };
+    currentMats.push(row);
+    renderMats();
+    if(focusNew){
+      requestAnimationFrame(function(){
+        var input = document.querySelector('[data-id="' + row.id + '"][data-field="name"]');
+        if(input){
+          input.focus({preventScroll:true});
+          input.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+    }
+  }
+  function removeMatRow(id){
+    currentMats = currentMats.filter(function(m){ return m.id !== id; });
+    if(currentMats.length === 0) addMatRow();
+    renderMats();
+  }
+  function renderMats(){
+    var wrap = document.getElementById('mat-list');
+    wrap.innerHTML = '';
+    currentMats.forEach(function(m, index){
+      var row = document.createElement('div');
+      row.className = 'mat-row';
+      row.innerHTML =
+        '<div class="mat-mobile-top">' +
+          '<span class="mat-mobile-title">Material ' + (index + 1) + '</span>' +
+          '<button type="button" class="mat-del" data-id="' + m.id + '" title="Quitar material">Quitar</button>' +
+        '</div>' +
+        '<div class="mat-field">' +
+          '<label class="mat-label" for="mat-name-' + m.id + '">Material / justificación</label>' +
+          '<input id="mat-name-' + m.id + '" type="text" placeholder="Ej. Cemento gris, 2 bultos" value="' + escapeAttr(m.name) + '" data-id="' + m.id + '" data-field="name" autocomplete="off">' +
+        '</div>' +
+        '<div class="mat-field">' +
+          '<label class="mat-label" for="mat-cost-' + m.id + '">Costo</label>' +
+          '<div class="cost-input"><span>$</span><input id="mat-cost-' + m.id + '" type="text" inputmode="decimal" placeholder="0.00" value="' + escapeAttr(m.cost) + '" data-id="' + m.id + '" data-field="cost" autocomplete="off"></div>' +
+        '</div>';
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('input', function(){
+        var id = this.getAttribute('data-id');
+        var field = this.getAttribute('data-field');
+        var m = currentMats.find(function(x){ return x.id === id; });
+        if(m){ m[field] = this.value; }
+        updateLiveTotal();
+      });
+    });
+    wrap.querySelectorAll('.mat-del').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        removeMatRow(this.getAttribute('data-id'));
+        updateLiveTotal();
+      });
+    });
+    updateLiveTotal();
+  }
+  function escapeAttr(v){
+    return String(v === undefined || v === null ? '' : v)
+      .replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function escapeHtml(v){
+    return String(v === undefined || v === null ? '' : v)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function parseCost(value){
+    var cleaned = String(value === undefined || value === null ? '' : value)
+      .trim()
+      .replace(/\s/g,'')
+      .replace(/\$/g,'');
+    if(cleaned.indexOf(',') > -1 && cleaned.indexOf('.') > -1){
+      cleaned = cleaned.lastIndexOf(',') > cleaned.lastIndexOf('.')
+        ? cleaned.replace(/\./g,'').replace(',','.')
+        : cleaned.replace(/,/g,'');
+    }else{
+      cleaned = cleaned.replace(',','.');
+    }
+    var number = Number(cleaned);
+    return Number.isFinite(number) && number >= 0 ? number : 0;
+  }
+
+  function calcTotal(mats){
+    return mats.reduce(function(sum, m){
+      return sum + parseCost(m.cost);
+    }, 0);
+  }
+  function updateLiveTotal(){
+    document.getElementById('live-total').textContent = fmtMoney(calcTotal(currentMats));
+  }
+
+  // ---------- form lifecycle ----------
+  function resetForm(){
+    editingId = null;
+    document.getElementById('f-date').value = todayISO();
+    document.getElementById('f-label').value = '';
+    document.getElementById('f-desc').value = '';
+    currentMats = [];
+    addMatRow();
+    document.getElementById('btn-save').textContent = 'Guardar entrada';
+  }
+
+  function saveEntry(createPdf){
+    var date = document.getElementById('f-date').value;
+    var label = document.getElementById('f-label').value.trim();
+    var desc = document.getElementById('f-desc').value.trim();
+    var mats = currentMats
+      .map(function(m){ return { name: m.name.trim(), cost: parseCost(m.cost) }; })
+      .filter(function(m){ return m.name !== '' || m.cost > 0; });
+
+    if(!date){ showToast('Agrega una fecha'); return; }
+    if(!desc){ showToast('Agrega una descripción'); return; }
+    if(mats.length === 0){ showToast('Agrega al menos un material'); return; }
+
+    var total = calcTotal(mats);
+
+    var savedId = editingId;
+    if(editingId){
+      var idx = entries.findIndex(function(e){ return e.id === editingId; });
+      if(idx > -1){
+        entries[idx] = Object.assign({}, entries[idx], { date:date, label:label, desc:desc, mats:mats, total:total });
+      }
+      showToast('Entrada actualizada');
+    }else{
+      savedId = uid();
+      entries.unshift({ id: savedId, date:date, label:label, desc:desc, mats:mats, total:total, createdAt: Date.now() });
+      showToast('Entrada guardada');
+    }
+    saveEntries();
+    renderHistory();
+    renderBadge();
+    if(createPdf && savedId){ exportEntryPDF(savedId); }
+    resetForm();
+  }
+
+  function editEntry(id){
+    var e = entries.find(function(x){ return x.id === id; });
+    if(!e) return;
+    editingId = id;
+    document.getElementById('f-date').value = e.date;
+    document.getElementById('f-label').value = e.label || '';
+    document.getElementById('f-desc').value = e.desc;
+    currentMats = e.mats.map(function(m){ return { id: uid(), name: m.name, cost: m.cost }; });
+    renderMats();
+    document.getElementById('btn-save').textContent = 'Actualizar entrada';
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  function deleteEntry(id){
+    entries = entries.filter(function(e){ return e.id !== id; });
+    saveEntries();
+    renderHistory();
+    renderBadge();
+    showToast('Entrada eliminada');
+  }
+
+  // ---------- history render ----------
+  function renderBadge(){
+    var n = entries.length + 1;
+    document.getElementById('entry-count-badge').textContent = '#' + String(n).padStart(3,'0');
+  }
+
+  function renderHistory(){
+    var list = document.getElementById('history-list');
+    var countEl = document.getElementById('history-count');
+    countEl.textContent = entries.length + (entries.length === 1 ? ' entrada' : ' entradas');
+
+    if(entries.length === 0){
+      list.innerHTML = '<div class="empty"><span class="icon">&#128221;</span>Aún no hay entradas guardadas.<br>Completa el formulario de arriba para comenzar.</div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    entries.forEach(function(e){
+      var card = document.createElement('div');
+      card.className = 'entry';
+      var matsHtml = e.mats.map(function(m){
+        return '<span>' + escapeHtml(m.name || 'Material') + ' &middot; ' + fmtMoneyShort(m.cost) + '</span>';
+      }).join('');
+      card.innerHTML =
+        '<div class="entry-top">' +
+          '<div>' +
+            '<div class="entry-date">' + escapeHtml(fmtDateShort(e.date)) + (e.label ? ' &nbsp;&middot;&nbsp; ' + escapeHtml(e.label) : '') + '</div>' +
+          '</div>' +
+          '<div class="entry-total">' + fmtMoney(e.total) + '</div>' +
+        '</div>' +
+        '<p class="entry-desc">' + escapeHtml(e.desc) + '</p>' +
+        '<div class="entry-mats">' + matsHtml + '</div>' +
+        '<div class="entry-actions">' +
+          '<button class="pdf" data-id="' + e.id + '">Descargar PDF</button>' +
+          '<button class="edit" data-id="' + e.id + '">Editar</button>' +
+          '<button class="del" data-id="' + e.id + '">Eliminar</button>' +
+        '</div>';
+      list.appendChild(card);
+    });
+
+    list.querySelectorAll('.pdf').forEach(function(b){
+      b.addEventListener('click', function(){ exportEntryPDF(this.getAttribute('data-id')); });
+    });
+    list.querySelectorAll('.edit').forEach(function(b){
+      b.addEventListener('click', function(){ editEntry(this.getAttribute('data-id')); });
+    });
+    list.querySelectorAll('.del').forEach(function(b){
+      b.addEventListener('click', function(){
+        if(confirm('¿Eliminar esta entrada? Esta acción no se puede deshacer.')){
+          deleteEntry(this.getAttribute('data-id'));
+        }
+      });
+    });
+  }
+
+  // ---------- PDF generation ----------
+  function drawEntryToPDF(doc, e, y, pageW, marginX){
+    var contentW = pageW - marginX*2;
+
+    // date + label header
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.setTextColor(43,38,32);
+    doc.text(capitalize(fmtDateLong(e.date)), marginX, y);
+
+    if(e.label){
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(10);
+      doc.setTextColor(107,99,87);
+      doc.text(e.label, pageW - marginX, y, { align:'right' });
+    }
+    y += 6;
+    doc.setDrawColor(216,207,187);
+    doc.setLineWidth(0.4);
+    doc.line(marginX, y, pageW - marginX, y);
+    y += 8;
+
+    // description
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(10.5);
+    doc.setTextColor(43,38,32);
+    var descLines = doc.splitTextToSize(e.desc, contentW);
+    doc.text(descLines, marginX, y);
+    y += descLines.length * 5 + 6;
+
+    // materials table header
+    doc.setFillColor(228,233,214);
+    doc.rect(marginX, y, contentW, 8, 'F');
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(9.5);
+    doc.setTextColor(62,74,40);
+    doc.text('MATERIAL', marginX + 3, y + 5.5);
+    doc.text('COSTO', pageW - marginX - 3, y + 5.5, { align:'right' });
+    y += 8;
+
+    // materials rows
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(10);
+    doc.setTextColor(43,38,32);
+    e.mats.forEach(function(m, i){
+      var rowY = y + 6.5;
+      if(i % 2 === 1){
+        doc.setFillColor(251,248,240);
+        doc.rect(marginX, y, contentW, 8, 'F');
+      }
+      doc.text(m.name || 'Material', marginX + 3, rowY);
+      doc.text(fmtMoney(m.cost), pageW - marginX - 3, rowY, { align:'right' });
+      y += 8;
+    });
+
+    // total
+    y += 2;
+    doc.setDrawColor(43,38,32);
+    doc.setLineWidth(0.6);
+    doc.line(marginX, y, pageW - marginX, y);
+    y += 8;
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.setTextColor(124,54,30);
+    doc.text('TOTAL', marginX, y);
+    doc.text(fmtMoney(e.total), pageW - marginX, y, { align:'right' });
+    y += 14;
+
+    return y;
+  }
+
+  function capitalize(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function newDoc(){
+    var doc = new window.jspdf.jsPDF({ unit:'mm', format:'letter' });
+    return doc;
+  }
+
+  function drawHeader(doc, pageW, marginX, title){
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(17);
+    doc.setTextColor(43,38,32);
+    doc.text('Bitácora de obra', marginX, 20);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9.5);
+    doc.setTextColor(107,99,87);
+    doc.text(title, marginX, 26);
+    doc.setDrawColor(43,38,32);
+    doc.setLineWidth(0.8);
+    doc.line(marginX, 30, pageW - marginX, 30);
+    return 42;
+  }
+
+  function exportEntryPDF(id){
+    var e = entries.find(function(x){ return x.id === id; });
+    if(!e) return;
+    var doc = newDoc();
+    var pageW = doc.internal.pageSize.getWidth();
+    var marginX = 18;
+    var y = drawHeader(doc, pageW, marginX, 'Reporte de trabajo diario');
+    drawEntryToPDF(doc, e, y, pageW, marginX);
+
+    var fname = 'bitacora_' + e.date + (e.label ? '_' + slug(e.label) : '') + '.pdf';
+    doc.save(fname);
+    showToast('PDF descargado');
+  }
+
+  function exportAllPDF(){
+    if(entries.length === 0){ showToast('No hay entradas para exportar'); return; }
+    var doc = newDoc();
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    var marginX = 18;
+    var bottomLimit = pageH - 20;
+
+    var sorted = entries.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
+    var grandTotal = sorted.reduce(function(s,e){ return s + e.total; }, 0);
+
+    var rangeLabel = sorted.length === 1
+      ? fmtDateLong(sorted[0].date)
+      : 'Del ' + fmtDateShort(sorted[0].date) + ' al ' + fmtDateShort(sorted[sorted.length-1].date);
+    var subtitle = sorted.length + (sorted.length === 1 ? ' entrada' : ' entradas') + ' registradas  -  ' + rangeLabel;
+    var y = drawHeader(doc, pageW, marginX, subtitle);
+
+    sorted.forEach(function(e, idx){
+      // estimate height needed roughly; if close to bottom, new page
+      var estRows = 20 + e.mats.length * 8 + Math.ceil(e.desc.length/85)*5;
+      if(y + estRows > bottomLimit){
+        doc.addPage();
+        y = 20;
+      }
+      y = drawEntryToPDF(doc, e, y, pageW, marginX);
+      if(y > bottomLimit - 15 && idx < sorted.length - 1){
+        doc.addPage();
+        y = 20;
+      }
+    });
+
+    // grand total page footer block
+    if(y > bottomLimit - 25){ doc.addPage(); y = 20; }
+    y += 4;
+    doc.setFillColor(43,38,32);
+    doc.rect(marginX, y, pageW - marginX*2, 14, 'F');
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(12);
+    doc.setTextColor(255,255,255);
+    doc.text('TOTAL GENERAL', marginX + 4, y + 9);
+    doc.text(fmtMoney(grandTotal), pageW - marginX - 4, y + 9, { align:'right' });
+
+    doc.save('bitacora_completa_' + todayISO() + '.pdf');
+    showToast('PDF con todas las entradas descargado');
+  }
+
+  function slug(s){
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  }
+
+  // ---------- wire up ----------
+  document.getElementById('btn-add-mat').addEventListener('click', function(){ addMatRow('', '', true); });
+  document.getElementById('btn-save').addEventListener('click', function(){ saveEntry(false); });
+  document.getElementById('btn-save-pdf').addEventListener('click', function(){ saveEntry(true); });
+  document.getElementById('btn-clear').addEventListener('click', function(){
+    if(confirm('¿Limpiar el formulario?')) resetForm();
+  });
+  document.getElementById('btn-export-all').addEventListener('click', exportAllPDF);
+
+  // init
+  loadEntries();
+  resetForm();
+  renderHistory();
+  renderBadge();
+
+})();
+</script>
+</body>
+</html>
