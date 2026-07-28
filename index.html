@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#F3EDE0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Bitácora de obra móvil</title>
+<title>Estimación plomería</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,9 +13,10 @@
   :root{
     --paper:#F3EDE0;
     --paper-card:#FBF8F0;
+    --white:#FFFFFF;
     --ink:#2B2620;
     --ink-soft:#6B6357;
-    --ink-faint:#A39B8B;
+    --ink-faint:#9C9384;
     --rule:#D8CFBB;
     --rule-strong:#C2B69E;
     --clay:#B5502E;
@@ -24,121 +25,90 @@
     --moss:#5C6B3F;
     --moss-tint:#E4E9D6;
     --danger:#A8402F;
-    --shadow:0 1px 2px rgba(43,38,32,0.06);
-    --shadow-lift:0 6px 20px rgba(43,38,32,0.10);
+    --shadow:0 1px 2px rgba(43,38,32,.06);
+    --shadow-lift:0 8px 24px rgba(43,38,32,.12);
   }
+
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
+    min-height:100vh;
+    padding-bottom:calc(70px + env(safe-area-inset-bottom));
     background:var(--paper);
-    background-image:
-      radial-gradient(circle at 1px 1px, rgba(43,38,32,0.05) 1px, transparent 0);
+    background-image:radial-gradient(circle at 1px 1px,rgba(43,38,32,.05) 1px,transparent 0);
     background-size:22px 22px;
     color:var(--ink);
-    font-family:'Inter',-apple-system,sans-serif;
-    min-height:100vh;
-    padding-bottom:calc(80px + env(safe-area-inset-bottom));
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
     -webkit-text-size-adjust:100%;
   }
-  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
 
-  /* ---------- header ---------- */
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+
   header{
-    padding:36px 0 22px;
+    padding:34px 0 20px;
     border-bottom:2px solid var(--ink);
-    margin-bottom:28px;
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    gap:16px;
-    flex-wrap:wrap;
+    margin-bottom:22px;
   }
+
   .brand-mark{
     display:flex;
-    align-items:baseline;
-    gap:12px;
+    align-items:center;
+    gap:10px;
+    min-height:28px;
   }
-  .brand-mark .num{
-    font-family:'Space Mono',monospace;
-    font-size:13px;
-    color:var(--clay);
-    background:var(--clay-tint);
-    padding:3px 8px;
-    border-radius:3px;
-    letter-spacing:0.03em;
-  }
-  h1{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:32px;
-    margin:6px 0 4px;
-    letter-spacing:-0.01em;
-  }
-  header p{margin:0;color:var(--ink-soft);font-size:14px;}
-  .header-actions{display:flex;gap:10px;}
 
+  .brand-mark .num{
+    display:inline-flex;
+    align-items:center;
+    min-height:28px;
+    padding:4px 9px;
+    border-radius:4px;
+    background:var(--clay);
+    color:#fff;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.03em;
+  }
+
+  h1{
+    margin:10px 0 5px;
+    font-family:'Fraunces',Georgia,serif;
+    font-size:34px;
+    line-height:1.05;
+    font-weight:600;
+    letter-spacing:-.015em;
+  }
+
+  .whatsapp-contact{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:var(--ink);
+    text-decoration:none;
+  }
+
+  .whatsapp-contact:hover{color:var(--moss);}
+  .whatsapp-contact svg{width:30px;height:30px;color:#25D366;flex:0 0 auto;}
+  .whatsapp-contact strong{display:block;font-size:14px;}
+  .whatsapp-contact small{display:block;margin-top:1px;color:var(--ink-soft);font-size:12px;}
+
+  button,input,select{font:inherit;}
   button{
-    font-family:'Inter',sans-serif;
-    cursor:pointer;
-    border-radius:3px;
-    transition:transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
     min-height:44px;
+    border-radius:5px;
+    cursor:pointer;
     touch-action:manipulation;
     -webkit-tap-highlight-color:transparent;
+    transition:transform .08s ease,background .15s ease,border-color .15s ease;
   }
-  button:active{transform:scale(0.97);}
+  button:active{transform:scale(.98);}
 
-  .btn-ghost{
-    background:transparent;
-    border:1.5px solid var(--ink);
-    color:var(--ink);
-    font-size:13px;
-    font-weight:600;
-    padding:9px 14px;
-  }
-  .btn-ghost:hover{background:var(--ink);color:var(--paper-card);}
-
-  .btn-clay{
-    background:var(--clay);
-    border:1.5px solid var(--clay);
-    color:#fff;
-    font-size:13px;
-    font-weight:600;
-    padding:9px 16px;
-  }
-  .btn-clay:hover{background:var(--clay-dark);border-color:var(--clay-dark);}
-
-  /* ---------- form card ---------- */
-  .card{
-    background:var(--paper-card);
-    border:1px solid var(--rule);
-    border-radius:6px;
-    box-shadow:var(--shadow);
-    padding:26px 26px 22px;
-    margin-bottom:26px;
-  }
-  .card-title{
-    font-family:'Space Mono',monospace;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.12em;
-    color:var(--ink-faint);
-    margin:0 0 18px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .card-title::after{
-    content:'';
-    flex:1;
-    height:1px;
-    background:var(--rule);
-  }
   .device-note{
     display:flex;
-    align-items:flex-start;
     gap:9px;
-    margin:-10px 0 18px;
+    align-items:flex-start;
+    margin-bottom:18px;
     padding:11px 13px;
     border:1px solid #C9D2B8;
     border-radius:8px;
@@ -149,136 +119,262 @@
   }
   .device-note strong{display:block;margin-bottom:2px;}
 
+  .capture-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    margin-bottom:20px;
+    padding:3px;
+    border:1px solid var(--rule-strong);
+    border-radius:9px;
+    background:rgba(255,255,255,.45);
+  }
+
+  .capture-option{
+    min-height:50px;
+    padding:10px 12px;
+    border:0;
+    border-radius:7px;
+    background:transparent;
+    color:var(--ink);
+    font-weight:600;
+  }
+
+  .capture-option.active{
+    background:var(--clay);
+    color:#fff;
+    box-shadow:0 2px 7px rgba(124,54,30,.2);
+  }
+
+  .card{
+    margin-bottom:24px;
+    padding:25px 25px 22px;
+    border:1px solid var(--rule);
+    border-radius:10px;
+    background:var(--paper-card);
+    box-shadow:var(--shadow);
+  }
+
+  .card-title{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin:0 0 19px;
+    font-family:'Fraunces',Georgia,serif;
+    font-size:23px;
+    font-weight:600;
+  }
+  .card-title::after{
+    content:'';
+    height:1px;
+    flex:1;
+    background:var(--rule);
+  }
+
+  .row2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+  }
+
   .field{margin-bottom:18px;}
   .field label{
     display:block;
+    margin-bottom:7px;
+    color:var(--ink-soft);
     font-size:12.5px;
     font-weight:600;
-    color:var(--ink-soft);
-    margin-bottom:6px;
   }
-  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 
-  input[type=date], input[type=text], textarea, input[type=number]{
+  input[type=date],input[type=text],select{
     width:100%;
-    background:#fff;
-    border:1.5px solid var(--rule-strong);
-    border-radius:4px;
-    padding:10px 12px;
-    font-family:'Inter',sans-serif;
-    font-size:16px;
-    color:var(--ink);
     min-height:50px;
+    padding:10px 12px;
+    border:1.5px solid var(--rule-strong);
+    border-radius:5px;
+    background:#fff;
+    color:var(--ink);
+    font-size:16px;
     -webkit-appearance:none;
     appearance:none;
   }
-  input:focus, textarea:focus{
+
+  select{
+    background-image:
+      linear-gradient(45deg,transparent 50%,var(--ink-soft) 50%),
+      linear-gradient(135deg,var(--ink-soft) 50%,transparent 50%);
+    background-position:
+      calc(100% - 17px) 21px,
+      calc(100% - 12px) 21px;
+    background-size:5px 5px,5px 5px;
+    background-repeat:no-repeat;
+    padding-right:32px;
+  }
+
+  input:focus,select:focus{
     outline:none;
     border-color:var(--clay);
     box-shadow:0 0 0 3px var(--clay-tint);
   }
-  textarea{resize:vertical;min-height:108px;line-height:1.5;}
 
-  /* ---------- materials ---------- */
-  .mat-head{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 130px 34px;
-    gap:10px;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-    color:var(--ink-faint);
-    padding:0 2px 6px;
-  }
-  .mat-row{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 130px 34px;
-    gap:10px;
-    margin-bottom:9px;
-    align-items:center;
-  }
-  .mat-mobile-top{display:contents;}
-  .mat-mobile-title,.mat-label{display:none;}
-  .mat-field{min-width:0;}
-  .mat-row input, .mat-row .cost-input{min-width:0;}
-  .mat-row .cost-input{position:relative;}
-  .mat-row .cost-input span{
-    position:absolute;left:11px;top:50%;transform:translateY(-50%);
-    color:var(--ink-faint);font-size:14px;pointer-events:none;
-  }
-  .mat-row .cost-input input{padding-left:24px;text-align:right;font-family:'Space Mono',monospace;}
-  .mat-del{
-    background:transparent;border:1.5px solid var(--rule-strong);
-    color:var(--ink-faint);width:42px;height:50px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:16px;line-height:1;border-radius:4px;
-  }
-  .mat-del:hover{border-color:var(--danger);color:var(--danger);background:#FBEDEB;}
-
-  .add-mat{
-    background:transparent;
-    border:1.5px dashed var(--rule-strong);
-    color:var(--ink-soft);
-    font-size:13px;
-    font-weight:600;
-    padding:13px 14px;
-    min-height:52px;
-    width:100%;
-    margin-top:4px;
+  .helper{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    margin:-4px 0 15px;
+    padding:10px 12px;
+    border-left:3px solid var(--clay);
     border-radius:4px;
+    background:#F8EEE8;
+    color:var(--clay-dark);
+    font-size:12px;
+    line-height:1.45;
   }
-  .add-mat:hover{border-color:var(--clay);color:var(--clay);border-style:solid;}
+
+  .section-label{
+    margin:0 0 10px;
+    color:var(--ink);
+    font-family:'Fraunces',Georgia,serif;
+    font-size:19px;
+    font-weight:600;
+  }
+
+  .rows-head{
+    display:grid;
+    gap:9px;
+    padding:0 4px 7px;
+    color:var(--ink-faint);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+
+  .estimate-head{grid-template-columns:minmax(0,1fr) 145px 42px;}
+  .budget-head{grid-template-columns:minmax(170px,1.7fr) 82px 105px 128px 128px 42px;}
+
+  .concept-row{
+    display:grid;
+    gap:9px;
+    align-items:center;
+    margin-bottom:10px;
+  }
+
+  .estimate-row{grid-template-columns:minmax(0,1fr) 145px 42px;}
+  .budget-row{grid-template-columns:minmax(170px,1.7fr) 82px 105px 128px 128px 42px;}
+
+  .mobile-row-title,.mobile-label{display:none;}
+
+  .money-input{position:relative;min-width:0;}
+  .money-input span{
+    position:absolute;
+    top:50%;
+    left:11px;
+    z-index:1;
+    transform:translateY(-50%);
+    color:var(--ink-faint);
+    pointer-events:none;
+  }
+  .money-input input{padding-left:25px;text-align:right;font-family:'Space Mono',monospace;}
+
+  .amount-output{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    min-height:50px;
+    padding:10px 11px;
+    border:1.5px solid var(--rule);
+    border-radius:5px;
+    background:#F5F0E6;
+    color:var(--ink);
+    font-family:'Space Mono',monospace;
+    font-size:14px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+
+  .row-remove{
+    width:42px;
+    min-width:42px;
+    min-height:50px;
+    padding:0;
+    border:1.5px solid var(--rule-strong);
+    background:transparent;
+    color:var(--ink-faint);
+    font-size:18px;
+  }
+  .row-remove:hover{border-color:var(--danger);background:#FBEDEB;color:var(--danger);}
+
+  .add-row{
+    width:100%;
+    min-height:50px;
+    margin-top:3px;
+    padding:11px 14px;
+    border:1.5px dashed var(--clay);
+    background:transparent;
+    color:var(--clay);
+    font-size:13px;
+    font-weight:700;
+  }
+  .add-row:hover{background:#F8EEE8;}
 
   .total-bar{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-top:20px;
-    padding-top:16px;
+    padding:16px 4px 0;
     border-top:1.5px solid var(--ink);
   }
-  .total-bar .label{font-size:13px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.06em;}
-  .total-bar .amount{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:28px;
+  .total-label{
+    color:var(--ink-soft);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+  .total-amount{
     color:var(--clay-dark);
+    font-family:'Fraunces',Georgia,serif;
+    font-size:29px;
+    font-weight:600;
   }
 
-  .form-actions{
-    display:flex;
-    gap:10px;
-    margin-top:22px;
+  .create-pdf{
+    width:100%;
+    min-height:54px;
+    margin-top:20px;
+    padding:12px 18px;
+    border:1.5px solid var(--clay);
+    border-radius:6px;
+    background:var(--clay);
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
   }
-  .form-actions .btn-clay{flex:1;padding:12px;font-size:14px;}
-  .form-actions .btn-ghost{padding:12px 16px;}
+  .create-pdf:hover{background:var(--clay-dark);border-color:var(--clay-dark);}
+  .create-pdf[disabled]{cursor:wait;opacity:.65;}
 
-  /* ---------- history ---------- */
   .history-title{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    margin-bottom:14px;
+    align-items:center;
+    margin-bottom:13px;
   }
   .history-title h2{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:19px;
     margin:0;
+    font-family:'Fraunces',Georgia,serif;
+    font-size:20px;
   }
-  .history-count{
-    font-family:'Space Mono',monospace;
-    font-size:12px;
-    color:var(--ink-faint);
-  }
+  .history-count{color:var(--ink-faint);font-family:'Space Mono',monospace;font-size:11px;}
 
   .entry{
-    background:var(--paper-card);
+    margin-bottom:11px;
+    padding:15px 17px;
     border:1px solid var(--rule);
     border-left:3px solid var(--clay);
-    border-radius:5px;
-    padding:16px 18px;
-    margin-bottom:12px;
+    border-radius:6px;
+    background:var(--paper-card);
     box-shadow:var(--shadow);
   }
   .entry-top{
@@ -288,714 +384,1423 @@
     gap:12px;
     margin-bottom:8px;
   }
-  .entry-date{
-    font-family:'Space Mono',monospace;
-    font-size:12.5px;
+  .entry-folio{
     color:var(--clay);
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:0.04em;
-  }
-  .entry-total{
-    font-family:'Fraunces',serif;
-    font-weight:600;
-    font-size:18px;
-    color:var(--ink);
-    white-space:nowrap;
-  }
-  .entry-desc{
-    font-size:14px;
-    color:var(--ink-soft);
-    line-height:1.5;
-    margin:0 0 10px;
-  }
-  .entry-mats{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-    margin-bottom:12px;
-  }
-  .entry-mats span{
     font-family:'Space Mono',monospace;
     font-size:11.5px;
-    background:var(--moss-tint);
-    color:#3E4A28;
-    padding:3px 8px;
-    border-radius:3px;
+    font-weight:700;
   }
-  .entry-actions{display:flex;gap:8px;}
+  .entry-date{margin-top:3px;color:var(--ink-soft);font-size:12px;}
+  .entry-total{
+    color:var(--ink);
+    font-family:'Fraunces',Georgia,serif;
+    font-size:19px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .entry-summary{
+    margin:0 0 10px;
+    color:var(--ink-soft);
+    font-size:13px;
+    line-height:1.45;
+  }
+  .entry-actions{display:flex;gap:8px;flex-wrap:wrap;}
   .entry-actions button{
-    font-size:12px;
-    padding:9px 11px;
-    min-height:44px;
+    min-height:42px;
+    padding:8px 11px;
     border:1.5px solid var(--rule-strong);
     background:transparent;
     color:var(--ink-soft);
-    font-weight:600;
+    font-size:12px;
+    font-weight:700;
   }
   .entry-actions button:hover{border-color:var(--ink);color:var(--ink);}
-  .entry-actions .del:hover{border-color:var(--danger);color:var(--danger);background:#FBEDEB;}
+  .entry-actions .delete:hover{border-color:var(--danger);background:#FBEDEB;color:var(--danger);}
 
   .empty{
-    text-align:center;
-    padding:50px 20px;
-    color:var(--ink-faint);
+    padding:42px 18px;
     border:1.5px dashed var(--rule-strong);
-    border-radius:6px;
-    font-size:14px;
+    border-radius:8px;
+    color:var(--ink-faint);
+    text-align:center;
+    font-size:13px;
+    line-height:1.5;
   }
-  .empty .icon{font-size:26px;margin-bottom:8px;display:block;}
+
+  .hidden{display:none !important;}
 
   .toast{
     position:fixed;
     bottom:24px;
     left:50%;
-    transform:translateX(-50%) translateY(20px);
+    z-index:100;
+    max-width:calc(100% - 28px);
+    padding:11px 18px;
+    border-radius:6px;
     background:var(--ink);
     color:var(--paper-card);
-    padding:11px 20px;
-    border-radius:5px;
-    font-size:13.5px;
-    font-weight:500;
+    box-shadow:var(--shadow-lift);
+    font-size:13px;
+    font-weight:600;
     opacity:0;
     pointer-events:none;
-    transition:all 0.25s ease;
-    box-shadow:var(--shadow-lift);
-    z-index:50;
+    transform:translateX(-50%) translateY(18px);
+    transition:all .22s ease;
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  @media (max-width:560px){
+  @media(max-width:700px){
     .wrap{padding:0 12px;}
-    header{
-      padding:calc(22px + env(safe-area-inset-top)) 2px 18px;
-      margin-bottom:18px;
-      align-items:flex-start;
-    }
-    h1{font-size:30px;line-height:1.05;}
-    header p{font-size:13px;}
-    .header-actions{width:100%;}
-    .header-actions .btn-ghost{width:100%;min-height:48px;}
+    header{padding:calc(22px + env(safe-area-inset-top)) 2px 17px;margin-bottom:18px;}
+    h1{font-size:31px;}
+    .card{padding:19px 15px;border-radius:12px;}
     .row2{grid-template-columns:1fr;}
-    .card{padding:18px 15px;border-radius:12px;}
-    .field{margin-bottom:20px;}
-    .mat-head{display:none;}
-    .mat-row{
+    .capture-option{font-size:13px;}
+
+    .rows-head{display:none;}
+    .concept-row{
       display:block;
       position:relative;
-      margin-bottom:13px;
-      padding:14px;
+      padding:13px;
       border:1px solid var(--rule);
-      border-radius:11px;
+      border-radius:10px;
       background:#F8F3E9;
     }
-    .mat-mobile-top{
+    .mobile-row-top{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:12px;
+      align-items:center;
+      gap:10px;
       margin-bottom:12px;
     }
-    .mat-mobile-title{
-      font-family:'Space Mono',monospace;
+    .mobile-row-title{
+      display:block;
       color:var(--clay-dark);
-      font-size:11px;
+      font-family:'Space Mono',monospace;
+      font-size:10.5px;
       font-weight:700;
-      letter-spacing:.06em;
+      letter-spacing:.05em;
       text-transform:uppercase;
     }
-    .mat-label{
+    .mobile-label{
       display:block;
       margin:0 0 6px;
       color:var(--ink-soft);
       font-size:12px;
       font-weight:600;
     }
-    .mat-field{margin-bottom:12px;}
-    .mat-field:last-child{margin-bottom:0;}
-    .mat-del{
+    .mobile-field{margin-bottom:12px;}
+    .mobile-field:last-child{margin-bottom:0;}
+    .row-remove{
       width:auto;
-      min-width:76px;
-      height:44px;
+      min-width:74px;
+      min-height:42px;
+      padding:7px 10px;
       border-color:#D9AAA1;
       background:#FBEDEB;
       color:var(--danger);
       font-size:12px;
       font-weight:700;
     }
-    .mat-row .cost-input input{text-align:left;}
-    .total-bar{margin-top:24px;}
-    .form-actions{
-      position:sticky;
-      bottom:calc(8px + env(safe-area-inset-bottom));
-      z-index:15;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:8px;
-      margin:22px -7px -7px;
-      padding:8px;
-      border:1px solid var(--rule);
-      border-radius:12px;
-      background:rgba(251,248,240,.95);
-      box-shadow:var(--shadow-lift);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-    }
-    .form-actions .btn-clay,.form-actions .btn-ghost{
-      width:100%;
-      min-height:52px;
-      padding:12px;
-      font-size:14px;
-    }
-    .entry{padding:15px 14px;}
-    .entry-actions{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-    }
-    .entry-actions .pdf{grid-column:1 / -1;}
+    .money-input input{text-align:left;}
+    .amount-output{justify-content:flex-start;}
+    .total-bar{margin-top:23px;}
+    .create-pdf{box-shadow:var(--shadow-lift);}
+    .entry-actions{display:grid;grid-template-columns:1fr 1fr;}
+    .entry-actions .pdf{grid-column:1/-1;}
     .entry-actions button{width:100%;}
-    .toast{
-      right:14px;
-      bottom:calc(16px + env(safe-area-inset-bottom));
-      left:14px;
-      width:auto;
-      text-align:center;
-    }
+    .toast{right:14px;bottom:calc(16px + env(safe-area-inset-bottom));left:14px;width:auto;text-align:center;transform:translateY(18px);}
+    .toast.show{transform:translateY(0);}
+  }
+
+  @media(max-width:420px){
+    .capture-options{grid-template-columns:1fr;}
+    .capture-option{min-height:44px;}
   }
 </style>
 </head>
 <body>
-
 <div class="wrap">
   <header>
-    <div>
-      <div class="brand-mark"><span class="num" id="entry-count-badge">#001</span></div>
-      <h1>Bitácora de obra</h1>
-      <p>Registro móvil de trabajo, materiales y costos</p>
-    </div>
-    <div class="header-actions">
-      <button class="btn-ghost" id="btn-export-all">Exportar todo a PDF</button>
-    </div>
+    <div class="brand-mark"><span class="num" id="entry-count-badge">#001</span></div>
+    <h1 id="main-title">Estimación plomería</h1>
+    <a class="whatsapp-contact" href="https://wa.me/52552172237" target="_blank" rel="noopener noreferrer" aria-label="Contactar a Daniel Frias por WhatsApp">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path fill="currentColor" d="M19.11 17.2c-.43-.22-2.55-1.26-2.95-1.4-.4-.14-.69-.22-.98.22-.29.43-1.12 1.4-1.37 1.69-.25.29-.5.33-.94.11-.43-.22-1.83-.67-3.49-2.15-1.29-1.15-2.16-2.57-2.41-3-.25-.43-.03-.67.19-.88.2-.19.43-.5.65-.76.22-.25.29-.43.43-.72.14-.29.07-.54-.04-.76-.11-.22-.98-2.37-1.34-3.24-.35-.85-.71-.74-.98-.75h-.83c-.29 0-.76.11-1.16.54-.4.43-1.52 1.48-1.52 3.61s1.55 4.19 1.77 4.48c.22.29 3.05 4.66 7.39 6.53 1.03.44 1.84.71 2.47.91 1.04.33 1.98.28 2.72.17.83-.12 2.55-1.04 2.91-2.05.36-1.01.36-1.87.25-2.05-.11-.18-.4-.29-.83-.5z"/>
+        <path fill="currentColor" d="M16.03 3C8.84 3 3 8.78 3 15.91c0 2.28.6 4.5 1.74 6.45L3 29l6.83-1.79a13.1 13.1 0 0 0 6.2 1.57h.01C23.22 28.78 29 23 29 15.91 29 8.78 23.22 3 16.03 3zm0 23.59h-.01a10.9 10.9 0 0 1-5.56-1.52l-.4-.24-4.05 1.06 1.08-3.93-.26-.4a10.66 10.66 0 0 1-1.64-5.65c0-5.92 4.87-10.73 10.85-10.73 2.89 0 5.61 1.12 7.65 3.14a10.65 10.65 0 0 1 3.17 7.59c0 5.89-4.86 10.68-10.83 10.68z"/>
+      </svg>
+      <span><strong>Daniel Frias</strong><small>552172237</small></span>
+    </a>
   </header>
 
   <div class="device-note">
-    <span aria-hidden="true">&#9679;</span>
+    <span aria-hidden="true">●</span>
     <span><strong>Lista para usarse en teléfono</strong>El historial se guarda en este dispositivo. Usa siempre el mismo navegador.</span>
   </div>
 
-  <div class="card">
-    <p class="card-title">Nueva entrada</p>
+  <div class="capture-options" role="radiogroup" aria-label="Tipo de documento">
+    <button class="capture-option active" type="button" data-mode="estimacion" aria-pressed="true">Estimación plomería</button>
+    <button class="capture-option" type="button" data-mode="presupuesto" aria-pressed="false">Presupuesto</button>
+  </div>
 
-    <div class="row2">
-      <div class="field">
-        <label for="f-date">Fecha</label>
-        <input type="date" id="f-date">
-      </div>
-      <div class="field">
-        <label for="f-label">Referencia (opcional)</label>
-        <input type="text" id="f-label" placeholder="Ej. Casa 2, área 5">
-      </div>
-    </div>
+  <main class="card">
+    <h2 class="card-title" id="form-title">Nueva estimación</h2>
 
     <div class="field">
-      <label for="f-desc">Descripción del trabajo</label>
-      <textarea id="f-desc" placeholder="Ej. Se realizó el mantenimiento del área 5, haciendo los cambios de los materiales M1 y M2."></textarea>
+      <label for="f-date">Fecha</label>
+      <input type="date" id="f-date">
     </div>
 
-    <div class="field" style="margin-bottom:8px;">
-      <label>Materiales</label>
-      <div class="mat-head">
-        <span>Material / justificación</span>
-        <span>Costo</span>
+    <section id="estimate-section">
+      <p class="section-label">Trabajos estimados</p>
+      <div class="helper">
+        <span aria-hidden="true">ⓘ</span>
+        <span>Captura cada trabajo por separado. Usa <strong>Agregar otro trabajo</strong> para incluir el siguiente concepto y evitar que todos aparezcan amontonados en el PDF.</span>
+      </div>
+
+      <div class="rows-head estimate-head" aria-hidden="true">
+        <span>Trabajo o concepto</span>
+        <span>Importe</span>
         <span></span>
       </div>
-      <div id="mat-list">
-        <div class="mat-row">
-          <div class="mat-mobile-top">
-            <span class="mat-mobile-title">Material 1</span>
-            <button type="button" class="mat-del" title="Quitar">Quitar</button>
-          </div>
-          <div class="mat-field">
-            <label class="mat-label">Material / justificación</label>
-            <input type="text" placeholder="Ej. Cemento gris, 2 bultos">
-          </div>
-          <div class="mat-field">
-            <label class="mat-label">Costo</label>
-            <div class="cost-input"><span>$</span><input type="text" inputmode="decimal" placeholder="0.00"></div>
-          </div>
+      <div id="estimate-list"></div>
+      <button class="add-row" id="btn-add-estimate" type="button">+ Agregar otro trabajo</button>
+    </section>
+
+    <section id="budget-section" class="hidden">
+      <div class="row2">
+        <div class="field">
+          <label for="f-client">Datos del cliente (opcional)</label>
+          <input type="text" id="f-client" placeholder="Ej. Cliente García" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-address">Obra / dirección (opcional)</label>
+          <input type="text" id="f-address" placeholder="Ej. Calle Roble 123, CDMX" autocomplete="off">
         </div>
       </div>
-      <button class="add-mat" id="btn-add-mat" type="button">+ Agregar material</button>
-    </div>
+
+      <p class="section-label">Conceptos</p>
+      <div class="helper">
+        <span aria-hidden="true">ⓘ</span>
+        <span>Captura un concepto por fila. El importe se calcula automáticamente con la cantidad y el precio unitario.</span>
+      </div>
+
+      <div class="rows-head budget-head" aria-hidden="true">
+        <span>Concepto</span>
+        <span>Cantidad</span>
+        <span>Unidad</span>
+        <span>Precio unitario</span>
+        <span>Importe</span>
+        <span></span>
+      </div>
+      <div id="budget-list"></div>
+      <button class="add-row" id="btn-add-budget" type="button">+ Agregar concepto</button>
+    </section>
 
     <div class="total-bar">
-      <span class="label">Total</span>
-      <span class="amount" id="live-total">$0</span>
+      <span class="total-label" id="total-label">Total estimado</span>
+      <span class="total-amount" id="live-total">$0.00</span>
     </div>
 
-    <div class="form-actions">
-      <button class="btn-clay" id="btn-save-pdf" type="button">Guardar y crear PDF</button>
-      <button class="btn-ghost" id="btn-save" type="button">Solo guardar</button>
-      <button class="btn-ghost" id="btn-clear" type="button">Limpiar</button>
-    </div>
-  </div>
+    <button class="create-pdf" id="btn-create-pdf" type="button">Crear PDF</button>
+  </main>
 
-  <div class="history-title">
-    <h2>Historial</h2>
-    <span class="history-count" id="history-count">0 entradas</span>
-  </div>
-  <div id="history-list"></div>
+  <section>
+    <div class="history-title">
+      <h2 id="history-title">Historial de estimaciones</h2>
+      <span class="history-count" id="history-count">0 documentos</span>
+    </div>
+    <div id="history-list"></div>
+  </section>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
+  'use strict';
 
   var STORAGE_KEY = 'bitacora_obra_entries_v1';
+  var MODE_KEY = 'bitacora_capture_mode';
+  var WHATSAPP_PNG = 'data:image/png;base64,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';
+  var PHONE_DISPLAY = '552172237';
+  var PHONE_LINK = 'https://wa.me/52552172237';
+
   var entries = [];
-  var currentMats = [];
+  var captureMode = 'estimacion';
   var editingId = null;
+  var drafts = {
+    estimacion: createEmptyDraft('estimacion'),
+    presupuesto: createEmptyDraft('presupuesto')
+  };
 
-  // ---------- storage ----------
-  function loadEntries(){
-    try{
-      var raw = localStorage.getItem(STORAGE_KEY);
-      entries = raw ? JSON.parse(raw) : [];
-    }catch(e){ entries = []; }
-  }
-  function saveEntries(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  function createRowId(){
+    return 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
   }
 
-  // ---------- helpers ----------
-  function fmtMoney(n){
-    n = isNaN(n) ? 0 : n;
-    return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+  function createEmptyEstimateRow(){
+    return { id:createRowId(), concept:'', amount:'' };
   }
-  function fmtMoneyShort(n){
-    n = isNaN(n) ? 0 : n;
-    return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:0, maximumFractionDigits:2});
+
+  function createEmptyBudgetRow(){
+    return { id:createRowId(), concept:'', quantity:'', unit:'pza', unitPrice:'' };
   }
-  function fmtDateLong(iso){
-    if(!iso) return '';
-    var parts = iso.split('-');
-    var d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-    var dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-    var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-    return dias[d.getDay()] + ' ' + d.getDate() + ' de ' + meses[d.getMonth()] + ', ' + d.getFullYear();
+
+  function createEmptyDraft(type){
+    return type === 'presupuesto'
+      ? { date:todayISO(), client:'', address:'', items:[createEmptyBudgetRow()] }
+      : { date:todayISO(), items:[createEmptyEstimateRow()] };
   }
-  function fmtDateShort(iso){
-    if(!iso) return '';
-    var parts = iso.split('-');
-    var d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-    var dias = ['dom','lun','mar','mié','jue','vie','sáb'];
-    var meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-    return dias[d.getDay()] + ' ' + d.getDate() + ' ' + meses[d.getMonth()];
-  }
-  function uid(){
-    return 'e' + Date.now() + Math.random().toString(36).slice(2,7);
-  }
+
   function todayISO(){
     var d = new Date();
-    var m = String(d.getMonth()+1).padStart(2,'0');
-    var day = String(d.getDate()).padStart(2,'0');
-    return d.getFullYear() + '-' + m + '-' + day;
-  }
-  function showToast(msg){
-    var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(showToast._tm);
-    showToast._tm = setTimeout(function(){ t.classList.remove('show'); }, 2200);
+    return d.getFullYear() + '-' +
+      String(d.getMonth()+1).padStart(2,'0') + '-' +
+      String(d.getDate()).padStart(2,'0');
   }
 
-  // ---------- materials rows (form) ----------
-  function addMatRow(name, cost, focusNew){
-    var row = { id: uid(), name: name || '', cost: (cost !== undefined ? cost : '') };
-    currentMats.push(row);
-    renderMats();
-    if(focusNew){
-      requestAnimationFrame(function(){
-        var input = document.querySelector('[data-id="' + row.id + '"][data-field="name"]');
-        if(input){
-          input.focus({preventScroll:true});
-          input.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-      });
-    }
-  }
-  function removeMatRow(id){
-    currentMats = currentMats.filter(function(m){ return m.id !== id; });
-    if(currentMats.length === 0) addMatRow();
-    renderMats();
-  }
-  function renderMats(){
-    var wrap = document.getElementById('mat-list');
-    wrap.innerHTML = '';
-    currentMats.forEach(function(m, index){
-      var row = document.createElement('div');
-      row.className = 'mat-row';
-      row.innerHTML =
-        '<div class="mat-mobile-top">' +
-          '<span class="mat-mobile-title">Material ' + (index + 1) + '</span>' +
-          '<button type="button" class="mat-del" data-id="' + m.id + '" title="Quitar material">Quitar</button>' +
-        '</div>' +
-        '<div class="mat-field">' +
-          '<label class="mat-label" for="mat-name-' + m.id + '">Material / justificación</label>' +
-          '<input id="mat-name-' + m.id + '" type="text" placeholder="Ej. Cemento gris, 2 bultos" value="' + escapeAttr(m.name) + '" data-id="' + m.id + '" data-field="name" autocomplete="off">' +
-        '</div>' +
-        '<div class="mat-field">' +
-          '<label class="mat-label" for="mat-cost-' + m.id + '">Costo</label>' +
-          '<div class="cost-input"><span>$</span><input id="mat-cost-' + m.id + '" type="text" inputmode="decimal" placeholder="0.00" value="' + escapeAttr(m.cost) + '" data-id="' + m.id + '" data-field="cost" autocomplete="off"></div>' +
-        '</div>';
-      wrap.appendChild(row);
-    });
-    wrap.querySelectorAll('input').forEach(function(inp){
-      inp.addEventListener('input', function(){
-        var id = this.getAttribute('data-id');
-        var field = this.getAttribute('data-field');
-        var m = currentMats.find(function(x){ return x.id === id; });
-        if(m){ m[field] = this.value; }
-        updateLiveTotal();
-      });
-    });
-    wrap.querySelectorAll('.mat-del').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        removeMatRow(this.getAttribute('data-id'));
-        updateLiveTotal();
-      });
-    });
-    updateLiveTotal();
-  }
-  function escapeAttr(v){
-    return String(v === undefined || v === null ? '' : v)
-      .replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-  function escapeHtml(v){
-    return String(v === undefined || v === null ? '' : v)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  function uid(){
+    return 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,8);
   }
 
-  function parseCost(value){
+  function escapeHtml(value){
+    return String(value === undefined || value === null ? '' : value)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
+
+  function escapeAttr(value){
+    return escapeHtml(value);
+  }
+
+  function parseNumber(value){
     var cleaned = String(value === undefined || value === null ? '' : value)
       .trim()
       .replace(/\s/g,'')
       .replace(/\$/g,'');
+    if(!cleaned) return 0;
+
     if(cleaned.indexOf(',') > -1 && cleaned.indexOf('.') > -1){
       cleaned = cleaned.lastIndexOf(',') > cleaned.lastIndexOf('.')
         ? cleaned.replace(/\./g,'').replace(',','.')
         : cleaned.replace(/,/g,'');
-    }else{
+    }else if(cleaned.indexOf(',') > -1){
       cleaned = cleaned.replace(',','.');
     }
-    var number = Number(cleaned);
-    return Number.isFinite(number) && number >= 0 ? number : 0;
+
+    var result = Number(cleaned);
+    return Number.isFinite(result) && result >= 0 ? result : 0;
   }
 
-  function calcTotal(mats){
-    return mats.reduce(function(sum, m){
-      return sum + parseCost(m.cost);
-    }, 0);
-  }
-  function updateLiveTotal(){
-    document.getElementById('live-total').textContent = fmtMoney(calcTotal(currentMats));
-  }
-
-  // ---------- form lifecycle ----------
-  function resetForm(){
-    editingId = null;
-    document.getElementById('f-date').value = todayISO();
-    document.getElementById('f-label').value = '';
-    document.getElementById('f-desc').value = '';
-    currentMats = [];
-    addMatRow();
-    document.getElementById('btn-save').textContent = 'Guardar entrada';
+  function fmtMoney(value){
+    var number = Number(value);
+    if(!Number.isFinite(number)) number = 0;
+    return '$' + number.toLocaleString('es-MX',{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
   }
 
-  function saveEntry(createPdf){
-    var date = document.getElementById('f-date').value;
-    var label = document.getElementById('f-label').value.trim();
-    var desc = document.getElementById('f-desc').value.trim();
-    var mats = currentMats
-      .map(function(m){ return { name: m.name.trim(), cost: parseCost(m.cost) }; })
-      .filter(function(m){ return m.name !== '' || m.cost > 0; });
+  function fmtNumber(value){
+    var number = Number(value);
+    if(!Number.isFinite(number)) number = 0;
+    return number.toLocaleString('es-MX',{
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    });
+  }
 
-    if(!date){ showToast('Agrega una fecha'); return; }
-    if(!desc){ showToast('Agrega una descripción'); return; }
-    if(mats.length === 0){ showToast('Agrega al menos un material'); return; }
+  function dateParts(iso){
+    if(!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+    var p = iso.split('-').map(Number);
+    return new Date(p[0],p[1]-1,p[2]);
+  }
 
-    var total = calcTotal(mats);
+  function fmtDateLong(iso){
+    var d = dateParts(iso);
+    if(!d) return '';
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return d.getDate() + ' de ' + months[d.getMonth()] + ' de ' + d.getFullYear();
+  }
 
-    var savedId = editingId;
-    if(editingId){
-      var idx = entries.findIndex(function(e){ return e.id === editingId; });
-      if(idx > -1){
-        entries[idx] = Object.assign({}, entries[idx], { date:date, label:label, desc:desc, mats:mats, total:total });
-      }
-      showToast('Entrada actualizada');
-    }else{
-      savedId = uid();
-      entries.unshift({ id: savedId, date:date, label:label, desc:desc, mats:mats, total:total, createdAt: Date.now() });
-      showToast('Entrada guardada');
+  function fmtDateShort(iso){
+    var d = dateParts(iso);
+    if(!d) return '';
+    var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function slug(value){
+    return String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/(^-|-$)/g,'');
+  }
+
+  function showToast(message){
+    var toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(function(){
+      toast.classList.remove('show');
+    },2600);
+  }
+
+  function normalizeEntry(raw){
+    if(!raw || typeof raw !== 'object') return null;
+
+    var type = raw.type === 'estimacion' ? 'estimacion' : 'presupuesto';
+    var normalized = {
+      id:raw.id || uid(),
+      type:type,
+      sequence:Number(raw.sequence) || 0,
+      folio:raw.folio || '',
+      date:raw.date || todayISO(),
+      client:String(raw.client || ''),
+      address:String(raw.address || raw.label || ''),
+      total:Number(raw.total) || 0,
+      createdAt:Number(raw.createdAt) || Date.now(),
+      updatedAt:Number(raw.updatedAt) || Number(raw.createdAt) || Date.now(),
+      legacyDescription:String(raw.description || raw.desc || ''),
+      items:[]
+    };
+
+    if(Array.isArray(raw.items)){
+      normalized.items = raw.items.map(function(item){
+        if(type === 'estimacion'){
+          return {
+            concept:String(item.concept || item.name || ''),
+            amount:Number(item.amount !== undefined ? item.amount : item.cost) || 0
+          };
+        }
+        var quantity = Number(item.quantity);
+        if(!Number.isFinite(quantity) || quantity <= 0) quantity = 1;
+        var unitPrice = Number(item.unitPrice !== undefined ? item.unitPrice : item.cost) || 0;
+        return {
+          concept:String(item.concept || item.name || ''),
+          quantity:quantity,
+          unit:String(item.unit || 'servicio'),
+          unitPrice:unitPrice,
+          amount:Number(item.amount) || quantity * unitPrice
+        };
+      });
+    }else if(Array.isArray(raw.mats)){
+      normalized.items = raw.mats.map(function(item){
+        var cost = Number(item.cost) || 0;
+        return {
+          concept:String(item.name || ''),
+          quantity:1,
+          unit:'servicio',
+          unitPrice:cost,
+          amount:cost
+        };
+      });
+      normalized.type = 'presupuesto';
     }
-    saveEntries();
+
+    normalized.items = normalized.items.filter(function(item){
+      return item.concept || Number(item.amount) > 0 || Number(item.unitPrice) > 0;
+    });
+
+    if(!normalized.total){
+      normalized.total = normalized.items.reduce(function(sum,item){
+        return sum + (normalized.type === 'estimacion'
+          ? Number(item.amount || 0)
+          : Number(item.amount || (Number(item.quantity || 0) * Number(item.unitPrice || 0))));
+      },0);
+    }
+
+    return normalized;
+  }
+
+  function assignMissingFolios(list){
+    var sorted = list.slice().sort(function(a,b){
+      return Number(a.createdAt || 0) - Number(b.createdAt || 0);
+    });
+    var counters = {estimacion:0,presupuesto:0};
+
+    sorted.forEach(function(entry){
+      if(entry.sequence > counters[entry.type]){
+        counters[entry.type] = entry.sequence;
+      }
+    });
+
+    sorted.forEach(function(entry){
+      if(!entry.sequence){
+        counters[entry.type] += 1;
+        entry.sequence = counters[entry.type];
+      }
+      entry.folio = entry.folio || folioFor(entry.type,entry.sequence);
+    });
+  }
+
+  function loadEntries(){
+    try{
+      var raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      entries = Array.isArray(raw)
+        ? raw.map(normalizeEntry).filter(Boolean)
+        : [];
+      assignMissingFolios(entries);
+      saveEntries();
+    }catch(error){
+      entries = [];
+    }
+  }
+
+  function saveEntries(){
+    try{
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));
+    }catch(error){
+      showToast('No se pudo guardar el historial en este dispositivo');
+    }
+  }
+
+  function folioFor(type,sequence){
+    return (type === 'estimacion' ? 'EST-' : 'PRE-') + String(sequence).padStart(4,'0');
+  }
+
+  function nextSequence(type){
+    return entries.reduce(function(max,entry){
+      return entry.type === type ? Math.max(max,Number(entry.sequence) || 0) : max;
+    },0) + 1;
+  }
+
+  function nextBadgeNumber(type){
+    return String(nextSequence(type)).padStart(3,'0');
+  }
+
+  function currentDraft(){
+    return drafts[captureMode];
+  }
+
+  function setCaptureMode(mode,options){
+    var nextMode = mode === 'presupuesto' ? 'presupuesto' : 'estimacion';
+    options = options || {};
+
+    if(editingId && nextMode !== captureMode && !options.keepEditing){
+      editingId = null;
+      showToast('Edición cancelada al cambiar de tipo');
+    }
+
+    captureMode = nextMode;
+    try{ localStorage.setItem(MODE_KEY,captureMode); }catch(error){}
+
+    document.body.setAttribute('data-mode',captureMode);
+    document.getElementById('main-title').textContent =
+      captureMode === 'estimacion' ? 'Estimación plomería' : 'Presupuesto';
+    document.title = document.getElementById('main-title').textContent;
+    document.getElementById('form-title').textContent =
+      editingId
+        ? (captureMode === 'estimacion' ? 'Editar estimación' : 'Editar presupuesto')
+        : (captureMode === 'estimacion' ? 'Nueva estimación' : 'Nuevo presupuesto');
+    document.getElementById('total-label').textContent =
+      captureMode === 'estimacion' ? 'Total estimado' : 'Total';
+    document.getElementById('history-title').textContent =
+      captureMode === 'estimacion' ? 'Historial de estimaciones' : 'Historial de presupuestos';
+
+    document.getElementById('estimate-section').classList.toggle('hidden',captureMode !== 'estimacion');
+    document.getElementById('budget-section').classList.toggle('hidden',captureMode !== 'presupuesto');
+
+    document.querySelectorAll('.capture-option').forEach(function(button){
+      var active = button.getAttribute('data-mode') === captureMode;
+      button.classList.toggle('active',active);
+      button.setAttribute('aria-pressed',active ? 'true' : 'false');
+    });
+
+    renderForm();
     renderHistory();
     renderBadge();
-    if(createPdf && savedId){ exportEntryPDF(savedId); }
-    resetForm();
+  }
+
+  function renderBadge(){
+    document.getElementById('entry-count-badge').textContent = '#' + nextBadgeNumber(captureMode);
+  }
+
+  function renderForm(){
+    var draft = currentDraft();
+    document.getElementById('f-date').value = draft.date || todayISO();
+
+    if(captureMode === 'presupuesto'){
+      document.getElementById('f-client').value = draft.client || '';
+      document.getElementById('f-address').value = draft.address || '';
+      renderBudgetRows();
+    }else{
+      renderEstimateRows();
+    }
+
+    updateLiveTotal();
+    document.getElementById('btn-create-pdf').textContent =
+      editingId ? 'Actualizar y crear PDF' : 'Crear PDF';
+  }
+
+  function renderEstimateRows(){
+    var wrap = document.getElementById('estimate-list');
+    var rows = drafts.estimacion.items;
+    wrap.innerHTML = '';
+
+    rows.forEach(function(row,index){
+      var element = document.createElement('div');
+      element.className = 'concept-row estimate-row';
+      element.innerHTML =
+        '<div class="mobile-row-top">' +
+          '<span class="mobile-row-title">Trabajo ' + (index+1) + '</span>' +
+          '<button class="row-remove" type="button" data-action="remove-estimate" data-id="' + row.id + '">Quitar</button>' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<label class="mobile-label" for="estimate-concept-' + row.id + '">Trabajo o concepto</label>' +
+          '<input type="text" id="estimate-concept-' + row.id + '" data-estimate-id="' + row.id + '" data-field="concept" value="' + escapeAttr(row.concept) + '" placeholder="Ej. Reemplazo de línea de agua fría" autocomplete="off">' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<label class="mobile-label" for="estimate-amount-' + row.id + '">Importe</label>' +
+          '<div class="money-input"><span>$</span><input type="text" id="estimate-amount-' + row.id + '" inputmode="decimal" data-estimate-id="' + row.id + '" data-field="amount" value="' + escapeAttr(row.amount) + '" placeholder="0.00" autocomplete="off"></div>' +
+        '</div>';
+
+      wrap.appendChild(element);
+    });
+
+    wrap.querySelectorAll('[data-estimate-id]').forEach(function(input){
+      input.addEventListener('input',function(){
+        var id = this.getAttribute('data-estimate-id');
+        var field = this.getAttribute('data-field');
+        var row = drafts.estimacion.items.find(function(item){return item.id === id;});
+        if(row) row[field] = this.value;
+        updateLiveTotal();
+      });
+    });
+
+    wrap.querySelectorAll('[data-action="remove-estimate"]').forEach(function(button){
+      button.addEventListener('click',function(){
+        removeEstimateRow(this.getAttribute('data-id'));
+      });
+    });
+  }
+
+  function renderBudgetRows(){
+    var wrap = document.getElementById('budget-list');
+    var rows = drafts.presupuesto.items;
+    wrap.innerHTML = '';
+
+    rows.forEach(function(row,index){
+      var amount = parseNumber(row.quantity) * parseNumber(row.unitPrice);
+      var element = document.createElement('div');
+      element.className = 'concept-row budget-row';
+      element.innerHTML =
+        '<div class="mobile-row-top">' +
+          '<span class="mobile-row-title">Concepto ' + (index+1) + '</span>' +
+          '<button class="row-remove" type="button" data-action="remove-budget" data-id="' + row.id + '">Quitar</button>' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<label class="mobile-label" for="budget-concept-' + row.id + '">Concepto</label>' +
+          '<input type="text" id="budget-concept-' + row.id + '" data-budget-id="' + row.id + '" data-field="concept" value="' + escapeAttr(row.concept) + '" placeholder="Ej. Instalación de tubería PVC 1/2&quot;" autocomplete="off">' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<label class="mobile-label" for="budget-quantity-' + row.id + '">Cantidad</label>' +
+          '<input type="text" id="budget-quantity-' + row.id + '" inputmode="decimal" data-budget-id="' + row.id + '" data-field="quantity" value="' + escapeAttr(row.quantity) + '" placeholder="1" autocomplete="off">' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<label class="mobile-label" for="budget-unit-' + row.id + '">Unidad</label>' +
+          '<select id="budget-unit-' + row.id + '" data-budget-id="' + row.id + '" data-field="unit">' +
+            unitOptions(row.unit) +
+          '</select>' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<label class="mobile-label" for="budget-price-' + row.id + '">Precio unitario</label>' +
+          '<div class="money-input"><span>$</span><input type="text" id="budget-price-' + row.id + '" inputmode="decimal" data-budget-id="' + row.id + '" data-field="unitPrice" value="' + escapeAttr(row.unitPrice) + '" placeholder="0.00" autocomplete="off"></div>' +
+        '</div>' +
+        '<div class="mobile-field">' +
+          '<span class="mobile-label">Importe</span>' +
+          '<output class="amount-output" id="budget-amount-' + row.id + '">' + fmtMoney(amount) + '</output>' +
+        '</div>';
+
+      wrap.appendChild(element);
+    });
+
+    wrap.querySelectorAll('[data-budget-id]').forEach(function(input){
+      input.addEventListener('input',updateBudgetInput);
+      input.addEventListener('change',updateBudgetInput);
+    });
+
+    wrap.querySelectorAll('[data-action="remove-budget"]').forEach(function(button){
+      button.addEventListener('click',function(){
+        removeBudgetRow(this.getAttribute('data-id'));
+      });
+    });
+  }
+
+  function unitOptions(selected){
+    var units = ['pza','m','m²','m³','kg','l','servicio','lote','día','hora','otro'];
+    return units.map(function(unit){
+      return '<option value="' + escapeAttr(unit) + '"' +
+        (unit === selected ? ' selected' : '') + '>' +
+        escapeHtml(unit) + '</option>';
+    }).join('');
+  }
+
+  function updateBudgetInput(){
+    var id = this.getAttribute('data-budget-id');
+    var field = this.getAttribute('data-field');
+    var row = drafts.presupuesto.items.find(function(item){return item.id === id;});
+    if(row) row[field] = this.value;
+
+    var output = document.getElementById('budget-amount-' + id);
+    if(output && row){
+      output.textContent = fmtMoney(parseNumber(row.quantity) * parseNumber(row.unitPrice));
+    }
+    updateLiveTotal();
+  }
+
+  function addEstimateRow(focus){
+    var row = createEmptyEstimateRow();
+    drafts.estimacion.items.push(row);
+    renderEstimateRows();
+    updateLiveTotal();
+    if(focus) focusAndScroll('#estimate-concept-' + row.id);
+  }
+
+  function addBudgetRow(focus){
+    var row = createEmptyBudgetRow();
+    drafts.presupuesto.items.push(row);
+    renderBudgetRows();
+    updateLiveTotal();
+    if(focus) focusAndScroll('#budget-concept-' + row.id);
+  }
+
+  function focusAndScroll(selector){
+    requestAnimationFrame(function(){
+      var input = document.querySelector(selector);
+      if(input){
+        input.focus({preventScroll:true});
+        input.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+    });
+  }
+
+  function removeEstimateRow(id){
+    var rows = drafts.estimacion.items;
+    if(rows.length === 1){
+      drafts.estimacion.items = [createEmptyEstimateRow()];
+    }else{
+      drafts.estimacion.items = rows.filter(function(row){return row.id !== id;});
+    }
+    renderEstimateRows();
+    updateLiveTotal();
+  }
+
+  function removeBudgetRow(id){
+    var rows = drafts.presupuesto.items;
+    if(rows.length === 1){
+      drafts.presupuesto.items = [createEmptyBudgetRow()];
+    }else{
+      drafts.presupuesto.items = rows.filter(function(row){return row.id !== id;});
+    }
+    renderBudgetRows();
+    updateLiveTotal();
+  }
+
+  function calculateTotal(type,items){
+    return items.reduce(function(total,item){
+      if(type === 'estimacion'){
+        return total + parseNumber(item.amount);
+      }
+      return total + parseNumber(item.quantity) * parseNumber(item.unitPrice);
+    },0);
+  }
+
+  function updateLiveTotal(){
+    var total = calculateTotal(captureMode,currentDraft().items);
+    document.getElementById('live-total').textContent = fmtMoney(total);
+  }
+
+  function validateDraft(){
+    var draft = currentDraft();
+    if(!draft.date){
+      return {ok:false,message:'Selecciona la fecha'};
+    }
+
+    var validItems = [];
+    for(var i=0;i<draft.items.length;i++){
+      var item = draft.items[i];
+
+      if(captureMode === 'estimacion'){
+        var concept = String(item.concept || '').trim();
+        var amountText = String(item.amount || '').trim();
+        var hasData = concept !== '' || amountText !== '';
+        if(!hasData) continue;
+        if(!concept){
+          return {ok:false,message:'Escribe el trabajo o concepto en la fila ' + (i+1)};
+        }
+        if(parseNumber(item.amount) <= 0){
+          return {ok:false,message:'Agrega un importe mayor a cero en la fila ' + (i+1)};
+        }
+        validItems.push({
+          concept:concept,
+          amount:parseNumber(item.amount)
+        });
+      }else{
+        var budgetConcept = String(item.concept || '').trim();
+        var quantityText = String(item.quantity || '').trim();
+        var priceText = String(item.unitPrice || '').trim();
+        var budgetHasData = budgetConcept !== '' || quantityText !== '' || priceText !== '';
+        if(!budgetHasData) continue;
+        if(!budgetConcept){
+          return {ok:false,message:'Escribe el concepto en la fila ' + (i+1)};
+        }
+        if(parseNumber(item.quantity) <= 0){
+          return {ok:false,message:'Agrega una cantidad mayor a cero en la fila ' + (i+1)};
+        }
+        if(parseNumber(item.unitPrice) <= 0){
+          return {ok:false,message:'Agrega un precio unitario mayor a cero en la fila ' + (i+1)};
+        }
+        var quantity = parseNumber(item.quantity);
+        var unitPrice = parseNumber(item.unitPrice);
+        validItems.push({
+          concept:budgetConcept,
+          quantity:quantity,
+          unit:String(item.unit || 'pza'),
+          unitPrice:unitPrice,
+          amount:quantity * unitPrice
+        });
+      }
+    }
+
+    if(validItems.length === 0){
+      return {
+        ok:false,
+        message:captureMode === 'estimacion'
+          ? 'Agrega al menos un trabajo con importe'
+          : 'Agrega al menos un concepto con cantidad y precio'
+      };
+    }
+
+    return {
+      ok:true,
+      items:validItems,
+      total:validItems.reduce(function(sum,item){return sum + Number(item.amount || 0);},0)
+    };
+  }
+
+  function buildEntry(validation){
+    var draft = currentDraft();
+    var existing = editingId
+      ? entries.find(function(entry){return entry.id === editingId;})
+      : null;
+    var sequence = existing ? existing.sequence : nextSequence(captureMode);
+    var now = Date.now();
+
+    return {
+      id:existing ? existing.id : uid(),
+      type:captureMode,
+      sequence:sequence,
+      folio:folioFor(captureMode,sequence),
+      date:draft.date,
+      client:captureMode === 'presupuesto' ? String(draft.client || '').trim() : '',
+      address:captureMode === 'presupuesto' ? String(draft.address || '').trim() : '',
+      items:validation.items,
+      total:validation.total,
+      createdAt:existing ? existing.createdAt : now,
+      updatedAt:now,
+      legacyDescription:existing ? existing.legacyDescription || '' : ''
+    };
+  }
+
+  function handleCreatePDF(){
+    var button = document.getElementById('btn-create-pdf');
+    if(button.disabled) return;
+
+    if(!window.jspdf || !window.jspdf.jsPDF){
+      showToast('No se pudo cargar el generador de PDF. Revisa tu conexión e inténtalo de nuevo.');
+      return;
+    }
+
+    var validation = validateDraft();
+    if(!validation.ok){
+      showToast(validation.message);
+      return;
+    }
+
+    var entry = buildEntry(validation);
+    button.disabled = true;
+
+    try{
+      generateEntryPDF(entry);
+
+      var index = entries.findIndex(function(item){return item.id === entry.id;});
+      if(index > -1){
+        entries[index] = entry;
+      }else{
+        entries.unshift(entry);
+      }
+      saveEntries();
+
+      editingId = null;
+      drafts[captureMode] = createEmptyDraft(captureMode);
+      renderForm();
+      renderHistory();
+      renderBadge();
+      showToast('PDF creado y documento guardado');
+    }catch(error){
+      console.error(error);
+      showToast('No se pudo crear el PDF');
+    }finally{
+      button.disabled = false;
+    }
   }
 
   function editEntry(id){
-    var e = entries.find(function(x){ return x.id === id; });
-    if(!e) return;
-    editingId = id;
-    document.getElementById('f-date').value = e.date;
-    document.getElementById('f-label').value = e.label || '';
-    document.getElementById('f-desc').value = e.desc;
-    currentMats = e.mats.map(function(m){ return { id: uid(), name: m.name, cost: m.cost }; });
-    renderMats();
-    document.getElementById('btn-save').textContent = 'Actualizar entrada';
-    window.scrollTo({ top:0, behavior:'smooth' });
+    var entry = entries.find(function(item){return item.id === id;});
+    if(!entry) return;
+
+    editingId = entry.id;
+    if(entry.type === 'estimacion'){
+      drafts.estimacion = {
+        date:entry.date,
+        items:entry.items.map(function(item){
+          return {
+            id:createRowId(),
+            concept:item.concept,
+            amount:String(item.amount)
+          };
+        })
+      };
+    }else{
+      drafts.presupuesto = {
+        date:entry.date,
+        client:entry.client || '',
+        address:entry.address || '',
+        items:entry.items.map(function(item){
+          return {
+            id:createRowId(),
+            concept:item.concept,
+            quantity:String(item.quantity),
+            unit:item.unit || 'pza',
+            unitPrice:String(item.unitPrice)
+          };
+        })
+      };
+    }
+
+    setCaptureMode(entry.type,{keepEditing:true});
+    document.getElementById('form-title').scrollIntoView({behavior:'smooth',block:'start'});
   }
 
   function deleteEntry(id){
-    entries = entries.filter(function(e){ return e.id !== id; });
+    entries = entries.filter(function(item){return item.id !== id;});
+    if(editingId === id){
+      editingId = null;
+      drafts[captureMode] = createEmptyDraft(captureMode);
+      renderForm();
+    }
     saveEntries();
     renderHistory();
     renderBadge();
-    showToast('Entrada eliminada');
-  }
-
-  // ---------- history render ----------
-  function renderBadge(){
-    var n = entries.length + 1;
-    document.getElementById('entry-count-badge').textContent = '#' + String(n).padStart(3,'0');
+    showToast('Documento eliminado');
   }
 
   function renderHistory(){
-    var list = document.getElementById('history-list');
-    var countEl = document.getElementById('history-count');
-    countEl.textContent = entries.length + (entries.length === 1 ? ' entrada' : ' entradas');
+    var filtered = entries
+      .filter(function(entry){return entry.type === captureMode;})
+      .sort(function(a,b){return Number(b.createdAt || 0) - Number(a.createdAt || 0);});
 
-    if(entries.length === 0){
-      list.innerHTML = '<div class="empty"><span class="icon">&#128221;</span>Aún no hay entradas guardadas.<br>Completa el formulario de arriba para comenzar.</div>';
+    var list = document.getElementById('history-list');
+    document.getElementById('history-count').textContent =
+      filtered.length + (filtered.length === 1 ? ' documento' : ' documentos');
+
+    if(filtered.length === 0){
+      list.innerHTML = '<div class="empty">Aún no hay documentos guardados.<br>Completa el formulario y presiona <strong>Crear PDF</strong>.</div>';
       return;
     }
 
     list.innerHTML = '';
-    entries.forEach(function(e){
-      var card = document.createElement('div');
+    filtered.forEach(function(entry){
+      var card = document.createElement('article');
       card.className = 'entry';
-      var matsHtml = e.mats.map(function(m){
-        return '<span>' + escapeHtml(m.name || 'Material') + ' &middot; ' + fmtMoneyShort(m.cost) + '</span>';
-      }).join('');
+      var first = entry.items[0] ? entry.items[0].concept : '';
+      var more = entry.items.length > 1 ? ' y ' + (entry.items.length-1) + ' más' : '';
       card.innerHTML =
         '<div class="entry-top">' +
           '<div>' +
-            '<div class="entry-date">' + escapeHtml(fmtDateShort(e.date)) + (e.label ? ' &nbsp;&middot;&nbsp; ' + escapeHtml(e.label) : '') + '</div>' +
+            '<div class="entry-folio">' + escapeHtml(entry.folio) + '</div>' +
+            '<div class="entry-date">' + escapeHtml(fmtDateShort(entry.date)) + '</div>' +
           '</div>' +
-          '<div class="entry-total">' + fmtMoney(e.total) + '</div>' +
+          '<div class="entry-total">' + escapeHtml(fmtMoney(entry.total)) + '</div>' +
         '</div>' +
-        '<p class="entry-desc">' + escapeHtml(e.desc) + '</p>' +
-        '<div class="entry-mats">' + matsHtml + '</div>' +
+        '<p class="entry-summary">' + escapeHtml(first + more) + '</p>' +
         '<div class="entry-actions">' +
-          '<button class="pdf" data-id="' + e.id + '">Descargar PDF</button>' +
-          '<button class="edit" data-id="' + e.id + '">Editar</button>' +
-          '<button class="del" data-id="' + e.id + '">Eliminar</button>' +
+          '<button type="button" class="pdf" data-action="pdf" data-id="' + entry.id + '">Descargar PDF</button>' +
+          '<button type="button" data-action="edit" data-id="' + entry.id + '">Editar</button>' +
+          '<button type="button" class="delete" data-action="delete" data-id="' + entry.id + '">Eliminar</button>' +
         '</div>';
       list.appendChild(card);
     });
 
-    list.querySelectorAll('.pdf').forEach(function(b){
-      b.addEventListener('click', function(){ exportEntryPDF(this.getAttribute('data-id')); });
+    list.querySelectorAll('[data-action="pdf"]').forEach(function(button){
+      button.addEventListener('click',function(){
+        var entry = entries.find(function(item){return item.id === button.getAttribute('data-id');});
+        if(!entry) return;
+        if(!window.jspdf || !window.jspdf.jsPDF){
+          showToast('No se pudo cargar el generador de PDF');
+          return;
+        }
+        try{
+          generateEntryPDF(entry);
+          showToast('PDF descargado');
+        }catch(error){
+          console.error(error);
+          showToast('No se pudo crear el PDF');
+        }
+      });
     });
-    list.querySelectorAll('.edit').forEach(function(b){
-      b.addEventListener('click', function(){ editEntry(this.getAttribute('data-id')); });
+
+    list.querySelectorAll('[data-action="edit"]').forEach(function(button){
+      button.addEventListener('click',function(){
+        editEntry(this.getAttribute('data-id'));
+      });
     });
-    list.querySelectorAll('.del').forEach(function(b){
-      b.addEventListener('click', function(){
-        if(confirm('¿Eliminar esta entrada? Esta acción no se puede deshacer.')){
+
+    list.querySelectorAll('[data-action="delete"]').forEach(function(button){
+      button.addEventListener('click',function(){
+        if(confirm('¿Eliminar este documento? Esta acción no se puede deshacer.')){
           deleteEntry(this.getAttribute('data-id'));
         }
       });
     });
   }
 
-  // ---------- PDF generation ----------
-  function drawEntryToPDF(doc, e, y, pageW, marginX){
-    var contentW = pageW - marginX*2;
+  function newPDF(){
+    return new window.jspdf.jsPDF({unit:'mm',format:'letter',orientation:'portrait'});
+  }
 
-    // date + label header
+  function setPageBackground(doc){
+    var pageW = doc.internal.pageSize.getWidth();
+    var pageH = doc.internal.pageSize.getHeight();
+    doc.setFillColor(251,248,240);
+    doc.rect(0,0,pageW,pageH,'F');
+  }
+
+  function drawCalendarIcon(doc,x,y){
+    doc.setDrawColor(181,80,46);
+    doc.setLineWidth(.6);
+    doc.roundedRect(x,y,6,6,1,1,'S');
+    doc.line(x,y+2,x+6,y+2);
+    doc.line(x+1.5,y-1,x+1.5,y+1);
+    doc.line(x+4.5,y-1,x+4.5,y+1);
+  }
+
+  function drawClientIcon(doc,x,y){
+    doc.setDrawColor(181,80,46);
+    doc.setLineWidth(.65);
+    doc.circle(x+4,y+3,2.1,'S');
+    doc.roundedRect(x+1,y+6,6,4,1.2,1.2,'S');
+  }
+
+  function drawPinIcon(doc,x,y){
+    doc.setDrawColor(181,80,46);
+    doc.setLineWidth(.65);
+    doc.circle(x+4,y+3.5,3,'S');
+    doc.circle(x+4,y+3.5,1,'S');
+    doc.line(x+2.1,y+5.8,x+4,y+9);
+    doc.line(x+5.9,y+5.8,x+4,y+9);
+  }
+
+  function drawPDFHeader(doc,entry){
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+
+    setPageBackground(doc);
+
+    doc.setFillColor(181,80,46);
+    doc.roundedRect(margin,12,34,10,2,2,'F');
+    doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold');
-    doc.setFontSize(13);
+    doc.setFontSize(10);
+    doc.text(entry.folio,margin+17,18.5,{align:'center'});
+
+    drawCalendarIcon(doc,pageW-margin-55,13.5);
     doc.setTextColor(43,38,32);
-    doc.text(capitalize(fmtDateLong(e.date)), marginX, y);
-
-    if(e.label){
-      doc.setFont('helvetica','normal');
-      doc.setFontSize(10);
-      doc.setTextColor(107,99,87);
-      doc.text(e.label, pageW - marginX, y, { align:'right' });
-    }
-    y += 6;
-    doc.setDrawColor(216,207,187);
-    doc.setLineWidth(0.4);
-    doc.line(marginX, y, pageW - marginX, y);
-    y += 8;
-
-    // description
     doc.setFont('helvetica','normal');
-    doc.setFontSize(10.5);
-    doc.setTextColor(43,38,32);
-    var descLines = doc.splitTextToSize(e.desc, contentW);
-    doc.text(descLines, marginX, y);
-    y += descLines.length * 5 + 6;
+    doc.setFontSize(9);
+    doc.text(fmtDateLong(entry.date),pageW-margin,18,{align:'right'});
 
-    // materials table header
-    doc.setFillColor(228,233,214);
-    doc.rect(marginX, y, contentW, 8, 'F');
+    doc.setTextColor(43,38,32);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(25);
+    doc.text(entry.type === 'estimacion' ? 'Estimación plomería' : 'Presupuesto',margin,38);
+
+    try{
+      doc.addImage(WHATSAPP_PNG,'PNG',margin,44,10,10);
+      if(typeof doc.link === 'function'){
+        doc.link(margin,44,10,10,{url:PHONE_LINK});
+      }
+    }catch(error){}
+
+    doc.setTextColor(43,38,32);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(11);
+    doc.text('Daniel Frias',margin+13,48);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9.5);
+    doc.text(PHONE_DISPLAY,margin+13,53);
+
+    doc.setDrawColor(181,80,46);
+    doc.setLineWidth(.35);
+    doc.setLineDashPattern([1,1],0);
+    doc.line(margin,61,pageW-margin,61);
+    doc.setLineDashPattern([],0);
+
+    return 68;
+  }
+
+  function drawContinuationHeader(doc,entry){
+    setPageBackground(doc);
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+    doc.setTextColor(43,38,32);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(12);
+    doc.text(entry.type === 'estimacion' ? 'Estimación plomería' : 'Presupuesto',margin,17);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(8.5);
+    doc.text(entry.folio,pageW-margin,17,{align:'right'});
+    doc.setDrawColor(181,80,46);
+    doc.setLineWidth(.35);
+    doc.line(margin,21,pageW-margin,21);
+    return 28;
+  }
+
+  function drawInfoCard(doc,x,y,w,title,value,iconType){
+    var lines = doc.splitTextToSize(value,w-24);
+    var h = Math.max(24,13 + lines.length*4.5);
+
+    doc.setFillColor(255,255,255);
+    doc.setDrawColor(216,207,187);
+    doc.setLineWidth(.35);
+    doc.roundedRect(x,y,w,h,2.5,2.5,'FD');
+
+    doc.setFillColor(248,238,232);
+    doc.circle(x+9,y+10,6,'F');
+    if(iconType === 'client') drawClientIcon(doc,x+5,y+5);
+    else drawPinIcon(doc,x+5,y+5);
+
+    doc.setTextColor(43,38,32);
     doc.setFont('helvetica','bold');
     doc.setFontSize(9.5);
-    doc.setTextColor(62,74,40);
-    doc.text('MATERIAL', marginX + 3, y + 5.5);
-    doc.text('COSTO', pageW - marginX - 3, y + 5.5, { align:'right' });
-    y += 8;
+    doc.text(title,x+18,y+8);
 
-    // materials rows
     doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.setTextColor(43,38,32);
-    e.mats.forEach(function(m, i){
-      var rowY = y + 6.5;
-      if(i % 2 === 1){
-        doc.setFillColor(251,248,240);
-        doc.rect(marginX, y, contentW, 8, 'F');
-      }
-      doc.text(m.name || 'Material', marginX + 3, rowY);
-      doc.text(fmtMoney(m.cost), pageW - marginX - 3, rowY, { align:'right' });
-      y += 8;
-    });
+    doc.setFontSize(9);
+    doc.setTextColor(107,99,87);
+    doc.text(lines,x+18,y+14);
 
-    // total
-    y += 2;
-    doc.setDrawColor(43,38,32);
-    doc.setLineWidth(0.6);
-    doc.line(marginX, y, pageW - marginX, y);
-    y += 8;
+    return h;
+  }
+
+  function drawOptionalBudgetInfo(doc,entry,y){
+    var hasClient = Boolean(entry.client);
+    var hasAddress = Boolean(entry.address);
+    if(!hasClient && !hasAddress) return y;
+
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+    var gap = 5;
+    var contentW = pageW-margin*2;
+
+    if(hasClient && hasAddress){
+      var cardW = (contentW-gap)/2;
+      var h1 = drawInfoCard(doc,margin,y,cardW,'Cliente',entry.client,'client');
+      var h2 = drawInfoCard(doc,margin+cardW+gap,y,cardW,'Obra / dirección',entry.address,'address');
+      return y + Math.max(h1,h2) + 7;
+    }
+
+    if(hasClient){
+      return y + drawInfoCard(doc,margin,y,contentW,'Cliente',entry.client,'client') + 7;
+    }
+
+    return y + drawInfoCard(doc,margin,y,contentW,'Obra / dirección',entry.address,'address') + 7;
+  }
+
+  function ensureSpace(doc,entry,y,needed){
+    var pageH = doc.internal.pageSize.getHeight();
+    if(y + needed <= pageH-20) return y;
+    doc.addPage();
+    return drawContinuationHeader(doc,entry);
+  }
+
+  function drawSectionTitle(doc,title,y){
+    var margin = 18;
+    doc.setTextColor(43,38,32);
     doc.setFont('helvetica','bold');
-    doc.setFontSize(13);
-    doc.setTextColor(124,54,30);
-    doc.text('TOTAL', marginX, y);
-    doc.text(fmtMoney(e.total), pageW - marginX, y, { align:'right' });
-    y += 14;
+    doc.setFontSize(11.5);
+    doc.text(title,margin,y);
+    return y+6;
+  }
+
+  function drawEstimateTableHeader(doc,y){
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+    var contentW = pageW-margin*2;
+    doc.setFillColor(243,237,224);
+    doc.roundedRect(margin,y,contentW,9,2,2,'F');
+    doc.setTextColor(43,38,32);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8.5);
+    doc.text('TRABAJO O CONCEPTO',margin+4,y+6);
+    doc.text('IMPORTE',pageW-margin-4,y+6,{align:'right'});
+    return y+9;
+  }
+
+  function drawBudgetTableHeader(doc,y){
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+    var contentW = pageW-margin*2;
+    var xConcept = margin+4;
+    var xQty = margin+91;
+    var xUnit = margin+116;
+    var xPrice = margin+147;
+    var xAmount = pageW-margin-4;
+
+    doc.setFillColor(243,237,224);
+    doc.roundedRect(margin,y,contentW,9,2,2,'F');
+    doc.setTextColor(43,38,32);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(7.8);
+    doc.text('CONCEPTO',xConcept,y+6);
+    doc.text('CANT.',xQty,y+6,{align:'right'});
+    doc.text('UNIDAD',xUnit,y+6,{align:'center'});
+    doc.text('P. UNITARIO',xPrice,y+6,{align:'right'});
+    doc.text('IMPORTE',xAmount,y+6,{align:'right'});
+    return y+9;
+  }
+
+  function drawEstimateRows(doc,entry,y){
+    var pageW = doc.internal.pageSize.getWidth();
+    var margin = 18;
+    var conceptW = 132;
+
+    for(var i=0;i<entry.items.length;i++){
+      var item = entry.items[i];
+      var lines = doc.splitTextToSize(item.concept,conceptW);
+      var rowH = Math.max(10,5 + lines.length*4.2);
+
+      if(y+rowH > doc.internal.pageSize.getHeight()-23){
+        doc.addPage();
+        y = drawContinuationHeader(doc,entry);
+        y = drawSectionTitle(doc,'Trabajos estimados (continuación)',y);
+        y = drawEstimateTableHeader(doc,y);
+      }
+
+      if(i%2===1){
+        doc.setFillColor(255,255,255);
+        doc.rect(margin,y,pageW-margin*2,rowH,'F');
+      }
+
+      doc.setTextColor(43,38,32);
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(9);
+      doc.text(lines,margin+4,y+6);
+      doc.setFont('helvetica','bold');
+      doc.text(fmtMoney(item.amount),pageW-margin-4,y+6,{align:'right'});
+
+      doc.setDrawColor(216,207,187);
+      doc.setLineWidth(.2);
+      doc.setLineDashPattern([.7,.8],0);
+      doc.line(margin+2,y+rowH,pageW-margin-2,y+rowH);
+      doc.setLineDashPattern([],0);
+      y += rowH;
+    }
 
     return y;
   }
 
-  function capitalize(s){
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
-
-  function newDoc(){
-    var doc = new window.jspdf.jsPDF({ unit:'mm', format:'letter' });
-    return doc;
-  }
-
-  function drawHeader(doc, pageW, marginX, title){
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(17);
-    doc.setTextColor(43,38,32);
-    doc.text('Bitácora de obra', marginX, 20);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(9.5);
-    doc.setTextColor(107,99,87);
-    doc.text(title, marginX, 26);
-    doc.setDrawColor(43,38,32);
-    doc.setLineWidth(0.8);
-    doc.line(marginX, 30, pageW - marginX, 30);
-    return 42;
-  }
-
-  function exportEntryPDF(id){
-    var e = entries.find(function(x){ return x.id === id; });
-    if(!e) return;
-    var doc = newDoc();
+  function drawBudgetRows(doc,entry,y){
     var pageW = doc.internal.pageSize.getWidth();
-    var marginX = 18;
-    var y = drawHeader(doc, pageW, marginX, 'Reporte de trabajo diario');
-    drawEntryToPDF(doc, e, y, pageW, marginX);
+    var margin = 18;
+    var xQty = margin+91;
+    var xUnit = margin+116;
+    var xPrice = margin+147;
+    var xAmount = pageW-margin-4;
+    var conceptW = 78;
 
-    var fname = 'bitacora_' + e.date + (e.label ? '_' + slug(e.label) : '') + '.pdf';
-    doc.save(fname);
-    showToast('PDF descargado');
+    for(var i=0;i<entry.items.length;i++){
+      var item = entry.items[i];
+      var lines = doc.splitTextToSize(item.concept,conceptW);
+      var rowH = Math.max(10,5 + lines.length*4.2);
+
+      if(y+rowH > doc.internal.pageSize.getHeight()-23){
+        doc.addPage();
+        y = drawContinuationHeader(doc,entry);
+        y = drawSectionTitle(doc,'Conceptos (continuación)',y);
+        y = drawBudgetTableHeader(doc,y);
+      }
+
+      if(i%2===1){
+        doc.setFillColor(255,255,255);
+        doc.rect(margin,y,pageW-margin*2,rowH,'F');
+      }
+
+      doc.setTextColor(43,38,32);
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(8.5);
+      doc.text(lines,margin+4,y+6);
+      doc.text(fmtNumber(item.quantity),xQty,y+6,{align:'right'});
+      doc.text(item.unit,xUnit,y+6,{align:'center'});
+      doc.text(fmtMoney(item.unitPrice),xPrice,y+6,{align:'right'});
+      doc.setFont('helvetica','bold');
+      doc.text(fmtMoney(item.amount),xAmount,y+6,{align:'right'});
+
+      doc.setDrawColor(216,207,187);
+      doc.setLineWidth(.2);
+      doc.setLineDashPattern([.7,.8],0);
+      doc.line(margin+2,y+rowH,pageW-margin-2,y+rowH);
+      doc.setLineDashPattern([],0);
+      y += rowH;
+    }
+
+    return y;
   }
 
-  function exportAllPDF(){
-    if(entries.length === 0){ showToast('No hay entradas para exportar'); return; }
-    var doc = newDoc();
+  function drawTotalBox(doc,entry,y){
     var pageW = doc.internal.pageSize.getWidth();
-    var pageH = doc.internal.pageSize.getHeight();
-    var marginX = 18;
-    var bottomLimit = pageH - 20;
+    var margin = 18;
+    var boxW = entry.type === 'estimacion' ? 104 : 92;
+    var x = pageW-margin-boxW;
+    var h = entry.type === 'estimacion' ? 18 : 27;
 
-    var sorted = entries.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
-    var grandTotal = sorted.reduce(function(s,e){ return s + e.total; }, 0);
+    y = ensureSpace(doc,entry,y,h+10);
 
-    var rangeLabel = sorted.length === 1
-      ? fmtDateLong(sorted[0].date)
-      : 'Del ' + fmtDateShort(sorted[0].date) + ' al ' + fmtDateShort(sorted[sorted.length-1].date);
-    var subtitle = sorted.length + (sorted.length === 1 ? ' entrada' : ' entradas') + ' registradas  -  ' + rangeLabel;
-    var y = drawHeader(doc, pageW, marginX, subtitle);
+    doc.setFillColor(255,255,255);
+    doc.setDrawColor(216,207,187);
+    doc.setLineWidth(.4);
+    doc.roundedRect(x,y,boxW,h,2.5,2.5,'FD');
 
-    sorted.forEach(function(e, idx){
-      // estimate height needed roughly; if close to bottom, new page
-      var estRows = 20 + e.mats.length * 8 + Math.ceil(e.desc.length/85)*5;
-      if(y + estRows > bottomLimit){
-        doc.addPage();
-        y = 20;
+    if(entry.type === 'estimacion'){
+      doc.setFillColor(181,80,46);
+      doc.roundedRect(x,y,45,h,2.5,2.5,'F');
+      doc.rect(x+42,y,5,h,'F');
+      doc.setTextColor(255,255,255);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(10.5);
+      doc.text('Total estimado',x+4,y+11);
+      doc.setTextColor(43,38,32);
+      doc.setFontSize(15);
+      doc.text(fmtMoney(entry.total),x+boxW-4,y+11.5,{align:'right'});
+    }else{
+      doc.setTextColor(43,38,32);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(9.5);
+      doc.text('Subtotal',x+6,y+8);
+      doc.text(fmtMoney(entry.total),x+boxW-6,y+8,{align:'right'});
+      doc.setDrawColor(181,80,46);
+      doc.setLineDashPattern([1,1],0);
+      doc.line(x+5,y+12,x+boxW-5,y+12);
+      doc.setLineDashPattern([],0);
+      doc.setFillColor(243,237,224);
+      doc.roundedRect(x+3,y+15,boxW-6,9,2,2,'F');
+      doc.setFontSize(11.5);
+      doc.text('Total',x+6,y+21.5);
+      doc.setFontSize(14);
+      doc.text(fmtMoney(entry.total),x+boxW-6,y+21.5,{align:'right'});
+    }
+
+    return y+h;
+  }
+
+  function addPDFPageNumbers(doc){
+    if(typeof doc.getNumberOfPages !== 'function' || typeof doc.setPage !== 'function') return;
+    var totalPages = doc.getNumberOfPages();
+    for(var i=1;i<=totalPages;i++){
+      doc.setPage(i);
+      var pageW = doc.internal.pageSize.getWidth();
+      var pageH = doc.internal.pageSize.getHeight();
+      doc.setTextColor(156,147,132);
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(7.5);
+      doc.text('Página ' + i + ' de ' + totalPages,pageW-18,pageH-9,{align:'right'});
+      if(i===totalPages){
+        doc.setTextColor(181,80,46);
+        doc.setFont('helvetica','italic');
+        doc.setFontSize(8.5);
+        doc.text('Gracias por su confianza.',18,pageH-9);
       }
-      y = drawEntryToPDF(doc, e, y, pageW, marginX);
-      if(y > bottomLimit - 15 && idx < sorted.length - 1){
-        doc.addPage();
-        y = 20;
-      }
+    }
+  }
+
+  function generateEntryPDF(entry){
+    var doc = newPDF();
+    var y = drawPDFHeader(doc,entry);
+
+    if(entry.type === 'presupuesto'){
+      y = drawOptionalBudgetInfo(doc,entry,y);
+      y = ensureSpace(doc,entry,y,20);
+      y = drawSectionTitle(doc,'Conceptos',y);
+      y = drawBudgetTableHeader(doc,y);
+      y = drawBudgetRows(doc,entry,y);
+    }else{
+      y = ensureSpace(doc,entry,y,20);
+      y = drawSectionTitle(doc,'Trabajos estimados',y);
+      y = drawEstimateTableHeader(doc,y);
+      y = drawEstimateRows(doc,entry,y);
+    }
+
+    y += 7;
+    drawTotalBox(doc,entry,y);
+    addPDFPageNumbers(doc);
+
+    var prefix = entry.type === 'estimacion' ? 'estimacion' : 'presupuesto';
+    var namePiece = entry.client ? '_' + slug(entry.client) : '';
+    doc.save(prefix + '_' + entry.folio.toLowerCase() + '_' + entry.date + namePiece + '.pdf');
+  }
+
+  document.querySelectorAll('.capture-option').forEach(function(button){
+    button.addEventListener('click',function(){
+      setCaptureMode(this.getAttribute('data-mode'));
     });
-
-    // grand total page footer block
-    if(y > bottomLimit - 25){ doc.addPage(); y = 20; }
-    y += 4;
-    doc.setFillColor(43,38,32);
-    doc.rect(marginX, y, pageW - marginX*2, 14, 'F');
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(12);
-    doc.setTextColor(255,255,255);
-    doc.text('TOTAL GENERAL', marginX + 4, y + 9);
-    doc.text(fmtMoney(grandTotal), pageW - marginX - 4, y + 9, { align:'right' });
-
-    doc.save('bitacora_completa_' + todayISO() + '.pdf');
-    showToast('PDF con todas las entradas descargado');
-  }
-
-  function slug(s){
-    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-  }
-
-  // ---------- wire up ----------
-  document.getElementById('btn-add-mat').addEventListener('click', function(){ addMatRow('', '', true); });
-  document.getElementById('btn-save').addEventListener('click', function(){ saveEntry(false); });
-  document.getElementById('btn-save-pdf').addEventListener('click', function(){ saveEntry(true); });
-  document.getElementById('btn-clear').addEventListener('click', function(){
-    if(confirm('¿Limpiar el formulario?')) resetForm();
   });
-  document.getElementById('btn-export-all').addEventListener('click', exportAllPDF);
 
-  // init
+  document.getElementById('f-date').addEventListener('change',function(){
+    currentDraft().date = this.value;
+  });
+
+  document.getElementById('f-client').addEventListener('input',function(){
+    drafts.presupuesto.client = this.value;
+  });
+
+  document.getElementById('f-address').addEventListener('input',function(){
+    drafts.presupuesto.address = this.value;
+  });
+
+  document.getElementById('btn-add-estimate').addEventListener('click',function(){
+    addEstimateRow(true);
+  });
+
+  document.getElementById('btn-add-budget').addEventListener('click',function(){
+    addBudgetRow(true);
+  });
+
+  document.getElementById('btn-create-pdf').addEventListener('click',handleCreatePDF);
+
   loadEntries();
-  resetForm();
-  renderHistory();
-  renderBadge();
 
+  try{
+    captureMode = localStorage.getItem(MODE_KEY) === 'presupuesto' ? 'presupuesto' : 'estimacion';
+  }catch(error){
+    captureMode = 'estimacion';
+  }
+
+  setCaptureMode(captureMode);
+
+  window.__BITACORA_TEST__ = {
+    getEntries:function(){return JSON.parse(JSON.stringify(entries));},
+    getMode:function(){return captureMode;},
+    getDrafts:function(){return JSON.parse(JSON.stringify(drafts));},
+    generateEntryPDF:generateEntryPDF,
+    validateDraft:validateDraft
+  };
 })();
 </script>
 </body>
